@@ -119,6 +119,18 @@
             background: #40c057;
         }
 
+        .btn-info {
+            background: #4dabf7;
+            color: white;
+            font-size: 12px;
+            padding: 6px 10px;
+            width: auto;
+        }
+
+        .btn-info:hover {
+            background: #339af0;
+        }
+
         .item-list {
             max-height: 250px;
             overflow-y: auto;
@@ -234,6 +246,27 @@
             color: #666;
         }
 
+        .export-section {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .export-section-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+
+        .export-section button {
+            font-size: 11px;
+            padding: 6px 10px;
+            width: auto;
+        }
+
         @media (max-width: 900px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -246,6 +279,15 @@
         <!-- Left Panel: Library Management -->
         <div class="panel">
             <div class="panel-title">📚 Library</div>
+
+            <!-- Export/Import Section -->
+            <div class="export-section">
+                <div class="export-section-title">⚙️ Library Management</div>
+                <div style="display: flex; gap: 5px;">
+                    <button class="btn-info" onclick="exportLibrary()">Export</button>
+                    <button class="btn-info" onclick="importLibrary()">Import</button>
+                </div>
+            </div>
 
             <!-- Profiles Section -->
             <div class="form-group">
@@ -333,7 +375,16 @@
         </div>
     </div>
 
+    <!-- Hidden file input for import -->
+    <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
+
     <script>
+        // DEFAULT LIBRARY - This is saved in the code and loaded on first visit
+        const DEFAULT_LIBRARY = {
+            profiles: [],
+            operations: []
+        };
+
         // Data storage
         let library = {
             profiles: [],
@@ -344,19 +395,80 @@
         let currentOperationName = null;
         let currentProfileOperations = [];
 
-        // Load from localStorage
+        // Load from localStorage or use default
         function loadLibrary() {
             const saved = localStorage.getItem('profileLibrary');
             if (saved) {
                 library = JSON.parse(saved);
+            } else {
+                library = JSON.parse(JSON.stringify(DEFAULT_LIBRARY));
+                saveLibrary();
             }
             renderProfiles();
             renderOperations();
         }
 
-        // Save to localStorage
+        // Save to localStorage AND update the code
         function saveLibrary() {
             localStorage.setItem('profileLibrary', JSON.stringify(library));
+            // Auto-download backup
+            downloadLibraryBackup();
+        }
+
+        // Export library to JSON file
+        function exportLibrary() {
+            const dataStr = JSON.stringify(library, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `profile-library-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Download library as backup
+        function downloadLibraryBackup() {
+            const dataStr = JSON.stringify(library, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'profile-library-backup.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import library from JSON file
+        function importLibrary() {
+            document.getElementById('fileInput').click();
+        }
+
+        // Handle file import
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.profiles && imported.operations) {
+                        library = imported;
+                        saveLibrary();
+                        renderProfiles();
+                        renderOperations();
+                        updateProfileSelect();
+                        alert('Library imported successfully!');
+                    } else {
+                        alert('Invalid library file format');
+                    }
+                } catch (err) {
+                    alert('Error reading file: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         // Start Add Profile
