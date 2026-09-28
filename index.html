@@ -204,11 +204,19 @@
             overflow-y: auto;
         }
 
-        .copy-btn {
+        .copy-btn, .print-btn {
             background: #667eea;
             color: white;
             width: 100%;
             margin-top: 10px;
+        }
+
+        .print-btn {
+            background: #51cf66;
+        }
+
+        .print-btn:hover {
+            background: #40c057;
         }
 
         .input-row {
@@ -254,6 +262,95 @@
             font-size: 11px;
             padding: 6px 10px;
             width: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-group button {
+            flex: 1;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .main-container {
+                max-width: 100%;
+                display: block;
+                gap: 0;
+            }
+
+            .panel {
+                display: none;
+            }
+
+            #printContainer {
+                display: block !important;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .print-btn, .copy-btn, .btn-primary, .btn-info, .btn-warning, .btn-danger, .btn-success {
+                display: none;
+            }
+        }
+
+        #printContainer {
+            display: none;
+            background: white;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .print-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .print-table th {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #000;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .print-table td {
+            padding: 15px;
+            border: 1px solid #000;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .print-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .print-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .print-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .print-header p {
+            font-size: 12px;
+            color: #666;
         }
 
         @media (max-width: 900px) {
@@ -363,9 +460,32 @@
                 <div class="results-container" id="results">
                     <div class="no-results">Results will appear here</div>
                 </div>
-                <button class="copy-btn" id="copyBtn" style="display: none;" onclick="copyResults()">📋 Copy</button>
+                <div class="btn-group">
+                    <button class="copy-btn" id="copyBtn" style="display: none;" onclick="copyResults()">📋 Copy</button>
+                    <button class="print-btn" id="printBtn" style="display: none;" onclick="printResults()">🖨️ Print</button>
+                </div>
             </div>
         </div>
+    </div>
+
+    <!-- Print Container (Hidden) -->
+    <div id="printContainer">
+        <div class="print-header">
+            <h1>Cutting Instructions</h1>
+            <p id="printDate"></p>
+            <p id="printProfile"></p>
+        </div>
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <th>Length</th>
+                    <th>Quantity</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody">
+            </tbody>
+        </table>
     </div>
 
     <!-- Hidden file input for import -->
@@ -389,6 +509,7 @@
         let currentProfileOperations = [];
         let isEditingProfile = false;
         let isEditingOperation = false;
+        let lastResults = [];
 
         // Load from localStorage or use default
         function loadLibrary() {
@@ -718,6 +839,7 @@
             document.getElementById('inputValues').value = '';
             document.getElementById('results').innerHTML = '<div class="no-results">Results will appear here</div>';
             document.getElementById('copyBtn').style.display = 'none';
+            document.getElementById('printBtn').style.display = 'none';
         }
 
         // Calculate
@@ -776,20 +898,27 @@
                             operation: operationName,
                             value: value,
                             tag: tag,
-                            output: output
+                            output: output,
+                            length: formatted,
+                            suffix: operation.suffix,
+                            id: tag
                         });
                     }
                 }
+
+                lastResults = allResults;
 
                 const resultsDiv = document.getElementById('results');
                 if (allResults.length === 0) {
                     resultsDiv.innerHTML = '<div class="no-results">No valid values</div>';
                     document.getElementById('copyBtn').style.display = 'none';
+                    document.getElementById('printBtn').style.display = 'none';
                 } else {
                     resultsDiv.innerHTML = allResults.map(r => 
                         `<div class="result-item">${r.output}</div>`
                     ).join('');
                     document.getElementById('copyBtn').style.display = 'block';
+                    document.getElementById('printBtn').style.display = 'block';
                     document.getElementById('copyBtn').dataset.results = allResults.map(r => r.output).join('\n');
                 }
             } catch (error) {
@@ -808,6 +937,39 @@
                     btn.textContent = original;
                 }, 2000);
             });
+        }
+
+        // Print Results
+        function printResults() {
+            if (lastResults.length === 0) {
+                alert('No results to print');
+                return;
+            }
+
+            const profileName = document.getElementById('profileSelect').value;
+            const today = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            document.getElementById('printDate').textContent = today;
+            document.getElementById('printProfile').textContent = `Profile: ${profileName}`;
+
+            const tableBody = document.getElementById('printTableBody');
+            tableBody.innerHTML = lastResults.map(r => `
+                <tr>
+                    <td>${r.length}</td>
+                    <td>${r.suffix}</td>
+                    <td>${r.id}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('printContainer').style.display = 'block';
+            setTimeout(() => {
+                window.print();
+                document.getElementById('printContainer').style.display = 'none';
+            }, 100);
         }
 
         // Initialize
