@@ -98,7 +98,7 @@
         .btn-small {
             padding: 6px 10px;
             font-size: 11px;
-            margin-right: 5px;
+            width: auto;
         }
 
         .btn-danger {
@@ -187,6 +187,15 @@
             margin-top: 10px;
         }
 
+        .input-row {
+            display: flex;
+            gap: 5px;
+        }
+
+        .input-row input {
+            flex: 1;
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
@@ -208,8 +217,8 @@
             <div class="form-group">
                 <label>Profiles</label>
                 <div class="item-list" id="profilesList"></div>
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="profileNameInput" placeholder="Profile name" style="flex: 1;">
+                <div class="input-row">
+                    <input type="text" id="profileNameInput" placeholder="Profile name">
                     <button class="btn-primary btn-small" onclick="addProfile()">Add</button>
                 </div>
             </div>
@@ -218,13 +227,13 @@
             <div class="form-group">
                 <label>Operations</label>
                 <div class="item-list" id="operationsList"></div>
-                <div style="display: flex; gap: 5px; margin-bottom: 8px;">
-                    <input type="text" id="operationNameInput" placeholder="Operation name" style="flex: 1;">
-                    <button class="btn-primary btn-small" onclick="showOperationForm()">Add</button>
+                <div class="input-row">
+                    <input type="text" id="operationNameInput" placeholder="Operation name">
+                    <button class="btn-primary btn-small" onclick="startAddOperation()">Add</button>
                 </div>
             </div>
 
-            <!-- Operation Form (Hidden) -->
+            <!-- Operation Details Form (Hidden) -->
             <div id="operationFormContainer" style="display: none; border: 1px solid #ddd; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
                 <div class="form-group">
                     <label>Formula</label>
@@ -319,6 +328,7 @@
             library.profiles.push({ name });
             saveLibrary();
             renderProfiles();
+            updateProfileSelect();
             document.getElementById('profileNameInput').value = '';
         }
 
@@ -347,8 +357,8 @@
             `).join('');
         }
 
-        // Add Operation
-        function showOperationForm() {
+        // Start Add Operation
+        function startAddOperation() {
             const name = document.getElementById('operationNameInput').value.trim();
             if (!name) {
                 alert('Enter operation name');
@@ -382,6 +392,7 @@
 
             saveLibrary();
             renderOperations();
+            updateOperationSelect();
             cancelOperationForm();
             document.getElementById('operationNameInput').value = '';
         }
