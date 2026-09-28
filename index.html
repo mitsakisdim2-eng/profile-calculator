@@ -71,7 +71,7 @@
 
         textarea {
             resize: vertical;
-            min-height: 60px;
+            min-height: 100px;
             font-family: 'Courier New', monospace;
         }
 
@@ -359,8 +359,8 @@
             </div>
 
             <div class="form-group">
-                <label>Value (e.g., 1500-001)</label>
-                <input type="text" id="inputValue" placeholder="1500-001">
+                <label>Values (one per line)</label>
+                <textarea id="inputValues" placeholder="1500-001&#10;1400-002&#10;1300-003"></textarea>
             </div>
 
             <button class="btn-primary" onclick="calculate()">Calculate</button>
@@ -656,7 +656,7 @@
 
         // Profile Select Changed
         function onProfileChange() {
-            document.getElementById('inputValue').value = '';
+            document.getElementById('inputValues').value = '';
             document.getElementById('results').innerHTML = '<div class="no-results">Results will appear here</div>';
             document.getElementById('copyBtn').style.display = 'none';
         }
@@ -664,15 +664,15 @@
         // Calculate
         function calculate() {
             const profileName = document.getElementById('profileSelect').value;
-            const inputValue = document.getElementById('inputValue').value.trim();
+            const inputValuesText = document.getElementById('inputValues').value.trim();
 
             if (!profileName) {
                 alert('Select a profile');
                 return;
             }
 
-            if (!inputValue) {
-                alert('Enter a value');
+            if (!inputValuesText) {
+                alert('Enter at least one value');
                 return;
             }
 
@@ -683,48 +683,50 @@
             }
 
             try {
-                const parts = inputValue.split('-');
-                const value = parseFloat(parts[0]);
-                const tag = parts.slice(1).join('-') || '';
+                const allResults = [];
+                const lines = inputValuesText.split('\n').filter(line => line.trim());
 
-                if (isNaN(value)) {
-                    alert('Invalid value');
-                    return;
-                }
+                for (const line of lines) {
+                    const parts = line.trim().split('-');
+                    const value = parseFloat(parts[0]);
+                    const tag = parts.slice(1).join('-') || '';
 
-                const results = [];
+                    if (isNaN(value)) continue;
 
-                for (const operationName of profile.operations) {
-                    const operation = library.operations.find(o => o.name === operationName);
-                    if (!operation) continue;
+                    for (const operationName of profile.operations) {
+                        const operation = library.operations.find(o => o.name === operationName);
+                        if (!operation) continue;
 
-                    const calc = new Function('value', `return ${operation.formula}`);
-                    let result = calc(value);
+                        const calc = new Function('value', `return ${operation.formula}`);
+                        let result = calc(value);
 
-                    result = Math.round(result * Math.pow(10, operation.precision)) / Math.pow(10, operation.precision);
-                    const formatted = result.toFixed(operation.precision);
+                        result = Math.round(result * Math.pow(10, operation.precision)) / Math.pow(10, operation.precision);
+                        const formatted = result.toFixed(operation.precision);
 
-                    let output = `${formatted}${operation.suffix}`;
-                    if (tag) {
-                        output += `-${tag}`;
+                        let output = `${formatted}${operation.suffix}`;
+                        if (tag) {
+                            output += `-${tag}`;
+                        }
+
+                        allResults.push({
+                            operation: operationName,
+                            value: value,
+                            tag: tag,
+                            output: output
+                        });
                     }
-
-                    results.push({
-                        operation: operationName,
-                        output: output
-                    });
                 }
 
                 const resultsDiv = document.getElementById('results');
-                if (results.length === 0) {
-                    resultsDiv.innerHTML = '<div class="no-results">No results</div>';
+                if (allResults.length === 0) {
+                    resultsDiv.innerHTML = '<div class="no-results">No valid values</div>';
                     document.getElementById('copyBtn').style.display = 'none';
                 } else {
-                    resultsDiv.innerHTML = results.map(r => 
-                        `<div class="result-item"><strong>${r.operation}:</strong> ${r.output}</div>`
+                    resultsDiv.innerHTML = allResults.map(r => 
+                        `<div class="result-item">${r.output}</div>`
                     ).join('');
                     document.getElementById('copyBtn').style.display = 'block';
-                    document.getElementById('copyBtn').dataset.results = results.map(r => r.output).join('\n');
+                    document.getElementById('copyBtn').dataset.results = allResults.map(r => r.output).join('\n');
                 }
             } catch (error) {
                 alert('Error: ' + error.message);
@@ -748,9 +750,9 @@
         loadLibrary();
         updateProfileSelect();
 
-        // Allow Enter to calculate
-        document.getElementById('inputValue').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        // Allow Ctrl+Enter to calculate
+        document.getElementById('inputValues').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
                 calculate();
             }
         });
