@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Profile Calculator - Calculate aluminum profile dimensions">
-    <meta name="theme-color" content="#2196F3">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <title>Profile Calculator</title>
     <style>
         * {
@@ -18,141 +13,156 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background: #f5f5f5;
             padding: 10px;
+        }
+
+        .main-container {
+            max-width: 600px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 10px;
         }
 
-        .container {
+        .panel {
+            flex: 1;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 100%;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        .panel-title {
+            font-weight: 600;
+            font-size: 13px;
             color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-
-        .subtitle {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
             color: #333;
             font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 4px;
+            font-size: 12px;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
             font-family: inherit;
-            transition: border-color 0.3s;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
         }
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
             font-family: 'Courier New', monospace;
-        }
-
-        .formula-display {
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 15px;
-            word-break: break-all;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
         }
 
         button {
-            flex: 1;
-            padding: 12px;
+            padding: 8px 12px;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
-        .btn-calculate {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-small {
+            padding: 6px 10px;
+            font-size: 11px;
+            margin-right: 5px;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
             color: white;
         }
 
-        .btn-calculate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        .btn-danger:hover {
+            background: #ee5a52;
         }
 
-        .btn-calculate:active {
-            transform: translateY(0);
+        .btn-success {
+            background: #51cf66;
+            color: white;
         }
 
-        .btn-clear {
-            background: #f0f0f0;
-            color: #333;
-            border: 2px solid #ddd;
+        .btn-success:hover {
+            background: #40c057;
         }
 
-        .btn-clear:hover {
-            background: #e8e8e8;
-        }
-
-        .results-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-
-        .results-title {
-            color: #333;
-            font-weight: 600;
+        .item-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             margin-bottom: 10px;
-            font-size: 14px;
+        }
+
+        .item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .item-detail {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 4px;
         }
 
         .result-item {
-            background: #f9f9f9;
+            background: #f0f7ff;
             padding: 10px;
             margin-bottom: 8px;
-            border-radius: 6px;
-            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-size: 12px;
             color: #333;
             word-break: break-all;
         }
@@ -161,150 +171,295 @@
             color: #999;
             font-style: italic;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
+            font-size: 12px;
+        }
+
+        .results-container {
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .copy-btn {
-            background: #e3f2fd;
-            color: #1976d2;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 10px;
+            background: #667eea;
+            color: white;
             width: 100%;
-            font-weight: 600;
+            margin-top: 10px;
         }
 
-        .copy-btn:hover {
-            background: #bbdefb;
-        }
-
-        .help-section {
-            background: #e3f2fd;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 12px;
-            color: #1565c0;
-            line-height: 1.5;
-        }
-
-        .help-section strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
             }
 
-            h1 {
-                font-size: 20px;
-            }
-
-            button {
-                font-size: 13px;
-                padding: 10px;
+            .panel {
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📐 Profile Calculator</h1>
-        <p class="subtitle">Calculate aluminum profile dimensions</p>
+    <div class="main-container">
+        <!-- Left Panel: Library Management -->
+        <div class="panel">
+            <div class="panel-title">📚 Library</div>
 
-        <div class="help-section">
-            <strong>How to use:</strong>
-            Enter values directly (one per line) or with tags (value-tag format).<br>
-            Example: <code>1000</code> or <code>1000-1</code>
+            <!-- Profiles Section -->
+            <div class="form-group">
+                <label>Profiles</label>
+                <div class="item-list" id="profilesList"></div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="profileNameInput" placeholder="Profile name" style="flex: 1;">
+                    <button class="btn-primary btn-small" onclick="addProfile()">Add</button>
+                </div>
+            </div>
+
+            <!-- Operations Section -->
+            <div class="form-group">
+                <label>Operations</label>
+                <div class="item-list" id="operationsList"></div>
+                <div style="display: flex; gap: 5px; margin-bottom: 8px;">
+                    <input type="text" id="operationNameInput" placeholder="Operation name" style="flex: 1;">
+                    <button class="btn-primary btn-small" onclick="showOperationForm()">Add</button>
+                </div>
+            </div>
+
+            <!-- Operation Form (Hidden) -->
+            <div id="operationFormContainer" style="display: none; border: 1px solid #ddd; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                <div class="form-group">
+                    <label>Formula</label>
+                    <input type="text" id="operationFormula" placeholder="e.g., (value - 192) / 2">
+                    <small style="color: #666; font-size: 11px;">Use 'value' as placeholder</small>
+                </div>
+                <div class="form-group">
+                    <label>Suffix</label>
+                    <input type="text" id="operationSuffix" placeholder="e.g., x2">
+                </div>
+                <div class="form-group">
+                    <label>Decimal Places</label>
+                    <input type="number" id="operationPrecision" min="0" max="5" value="1">
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <button class="btn-success" style="flex: 1;" onclick="saveOperation()">Save</button>
+                    <button class="btn-danger" style="flex: 1;" onclick="cancelOperationForm()">Cancel</button>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="profileTitle">Profile Title/ID</label>
-            <input type="text" id="profileTitle" placeholder="e.g., s35011">
-        </div>
+        <!-- Right Panel: Calculator -->
+        <div class="panel">
+            <div class="panel-title">⚙️ Calculate</div>
 
-        <div class="form-group">
-            <label for="profileType">Profile Type</label>
-            <select id="profileType">
-                <option value="custom">Custom Formula</option>
-                <option value="window">Window (subtract 192, divide by 2)</option>
-                <option value="door">Door (custom)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>Profile</label>
+                <select id="profileSelect" onchange="onProfileChange()">
+                    <option value="">Select profile...</option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="formula">Formula</label>
-            <div class="formula-display" id="formulaDisplay">(value - 192) / 2</div>
-            <input type="text" id="formula" placeholder="e.g., (value - 192) / 2" value="(value - 192) / 2">
-            <small style="color: #666; display: block; margin-top: 5px;">Use 'value' as placeholder for input number</small>
-        </div>
+            <div class="form-group">
+                <label>Operation</label>
+                <select id="operationSelect">
+                    <option value="">Select operation...</option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="suffix">Output Suffix</label>
-            <input type="text" id="suffix" placeholder="e.g., x2" value="x2">
-        </div>
+            <div class="form-group">
+                <label>Values (one per line)</label>
+                <textarea id="inputValues" placeholder="1000-001&#10;900-002&#10;800-003"></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="precision">Decimal Precision</label>
-            <input type="number" id="precision" min="0" max="5" value="1">
-        </div>
+            <button class="btn-primary" onclick="calculate()">Calculate</button>
 
-        <div class="form-group">
-            <label for="inputValues">Values to Calculate (one per line)</label>
-            <textarea id="inputValues" placeholder="1000&#10;900&#10;800&#10;700&#10;&#10;Or with tags:&#10;1000-1&#10;900-2&#10;800-4"></textarea>
-        </div>
-
-        <div class="button-group">
-            <button class="btn-calculate" onclick="calculate()">Calculate</button>
-            <button class="btn-clear" onclick="clearAll()">Clear</button>
-        </div>
-
-        <div class="results-section">
-            <div class="results-title">Results</div>
-            <div id="results" class="no-results">Enter values and click Calculate</div>
-            <button class="copy-btn" id="copyBtn" style="display: none;" onclick="copyResults()">📋 Copy Results</button>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Results</label>
+                <div class="results-container" id="results">
+                    <div class="no-results">Results will appear here</div>
+                </div>
+                <button class="copy-btn" id="copyBtn" style="display: none;" onclick="copyResults()">📋 Copy</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Register service worker for offline support
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+        // Data storage
+        let library = {
+            profiles: [],
+            operations: []
+        };
+
+        let currentOperationName = null;
+
+        // Load from localStorage
+        function loadLibrary() {
+            const saved = localStorage.getItem('profileLibrary');
+            if (saved) {
+                library = JSON.parse(saved);
+            }
+            renderProfiles();
+            renderOperations();
         }
 
-        const profileTypeSelect = document.getElementById('profileType');
-        const formulaInput = document.getElementById('formula');
-        const formulaDisplay = document.getElementById('formulaDisplay');
+        // Save to localStorage
+        function saveLibrary() {
+            localStorage.setItem('profileLibrary', JSON.stringify(library));
+        }
 
-        // Update formula based on profile type
-        profileTypeSelect.addEventListener('change', (e) => {
-            if (e.target.value === 'window') {
-                formulaInput.value = '(value - 192) / 2';
-                formulaDisplay.textContent = '(value - 192) / 2';
-            } else if (e.target.value === 'door') {
-                formulaInput.value = 'value - 100';
-                formulaDisplay.textContent = 'value - 100';
+        // Add Profile
+        function addProfile() {
+            const name = document.getElementById('profileNameInput').value.trim();
+            if (!name) {
+                alert('Enter profile name');
+                return;
             }
-        });
+            if (library.profiles.find(p => p.name === name)) {
+                alert('Profile already exists');
+                return;
+            }
+            library.profiles.push({ name });
+            saveLibrary();
+            renderProfiles();
+            document.getElementById('profileNameInput').value = '';
+        }
 
-        formulaInput.addEventListener('input', (e) => {
-            formulaDisplay.textContent = e.target.value;
-        });
+        // Delete Profile
+        function deleteProfile(name) {
+            library.profiles = library.profiles.filter(p => p.name !== name);
+            saveLibrary();
+            renderProfiles();
+            updateProfileSelect();
+        }
 
+        // Render Profiles
+        function renderProfiles() {
+            const container = document.getElementById('profilesList');
+            if (library.profiles.length === 0) {
+                container.innerHTML = '<div class="no-results">No profiles yet</div>';
+                return;
+            }
+            container.innerHTML = library.profiles.map(p => `
+                <div class="item">
+                    <span class="item-name">${p.name}</span>
+                    <div class="item-actions">
+                        <button class="btn-danger btn-small" onclick="deleteProfile('${p.name}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add Operation
+        function showOperationForm() {
+            const name = document.getElementById('operationNameInput').value.trim();
+            if (!name) {
+                alert('Enter operation name');
+                return;
+            }
+            if (library.operations.find(o => o.name === name)) {
+                alert('Operation already exists');
+                return;
+            }
+            currentOperationName = name;
+            document.getElementById('operationFormContainer').style.display = 'block';
+        }
+
+        // Save Operation
+        function saveOperation() {
+            const formula = document.getElementById('operationFormula').value.trim();
+            const suffix = document.getElementById('operationSuffix').value.trim();
+            const precision = parseInt(document.getElementById('operationPrecision').value) || 1;
+
+            if (!formula) {
+                alert('Enter formula');
+                return;
+            }
+
+            library.operations.push({
+                name: currentOperationName,
+                formula,
+                suffix,
+                precision
+            });
+
+            saveLibrary();
+            renderOperations();
+            cancelOperationForm();
+            document.getElementById('operationNameInput').value = '';
+        }
+
+        // Cancel Operation Form
+        function cancelOperationForm() {
+            document.getElementById('operationFormContainer').style.display = 'none';
+            document.getElementById('operationFormula').value = '';
+            document.getElementById('operationSuffix').value = '';
+            document.getElementById('operationPrecision').value = '1';
+            currentOperationName = null;
+        }
+
+        // Delete Operation
+        function deleteOperation(name) {
+            library.operations = library.operations.filter(o => o.name !== name);
+            saveLibrary();
+            renderOperations();
+            updateOperationSelect();
+        }
+
+        // Render Operations
+        function renderOperations() {
+            const container = document.getElementById('operationsList');
+            if (library.operations.length === 0) {
+                container.innerHTML = '<div class="no-results">No operations yet</div>';
+                return;
+            }
+            container.innerHTML = library.operations.map(o => `
+                <div class="item">
+                    <div>
+                        <div class="item-name">${o.name}</div>
+                        <div class="item-detail">${o.formula} ${o.suffix}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-danger btn-small" onclick="deleteOperation('${o.name}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update Profile Select
+        function updateProfileSelect() {
+            const select = document.getElementById('profileSelect');
+            const current = select.value;
+            select.innerHTML = '<option value="">Select profile...</option>' +
+                library.profiles.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+            select.value = current;
+        }
+
+        // Update Operation Select
+        function updateOperationSelect() {
+            const select = document.getElementById('operationSelect');
+            const current = select.value;
+            select.innerHTML = '<option value="">Select operation...</option>' +
+                library.operations.map(o => `<option value="${o.name}">${o.name}</option>`).join('');
+            select.value = current;
+        }
+
+        // Profile Select Changed
+        function onProfileChange() {
+            updateOperationSelect();
+        }
+
+        // Calculate
         function calculate() {
-            const profileTitle = document.getElementById('profileTitle').value || 'Profile';
+            const profileName = document.getElementById('profileSelect').value;
+            const operationName = document.getElementById('operationSelect').value;
             const inputValues = document.getElementById('inputValues').value;
-            const formula = document.getElementById('formula').value;
-            const suffix = document.getElementById('suffix').value;
-            const precision = parseInt(document.getElementById('precision').value) || 1;
 
-            if (!inputValues.trim()) {
-                alert('Please enter some values');
+            if (!profileName || !operationName || !inputValues.trim()) {
+                alert('Select profile, operation, and enter values');
+                return;
+            }
+
+            const operation = library.operations.find(o => o.name === operationName);
+            if (!operation) {
+                alert('Operation not found');
                 return;
             }
 
@@ -319,53 +474,37 @@
 
                     if (isNaN(value)) continue;
 
-                    // Create a safe calculator function
-                    const calc = new Function('value', `return ${formula}`);
+                    const calc = new Function('value', `return ${operation.formula}`);
                     let result = calc(value);
 
-                    // Format the result
-                    result = Math.round(result * Math.pow(10, precision)) / Math.pow(10, precision);
-                    const formatted = result.toFixed(precision);
+                    result = Math.round(result * Math.pow(10, operation.precision)) / Math.pow(10, operation.precision);
+                    const formatted = result.toFixed(operation.precision);
 
-                    // Build output
-                    let output = `${formatted}${suffix}`;
+                    let output = `${formatted}${operation.suffix}`;
                     if (tag) {
                         output += `-${tag}`;
                     }
 
-                    results.push({
-                        original: value,
-                        output: output,
-                        tag: tag ? parseInt(tag) || 0 : 0
-                    });
+                    results.push(output);
                 }
 
-                // Sort by tag number if present
-                results.sort((a, b) => a.tag - b.tag);
-
-                // Display results
                 const resultsDiv = document.getElementById('results');
                 if (results.length === 0) {
-                    resultsDiv.innerHTML = '<div class="no-results">No valid values to calculate</div>';
+                    resultsDiv.innerHTML = '<div class="no-results">No valid values</div>';
                     document.getElementById('copyBtn').style.display = 'none';
                 } else {
                     resultsDiv.innerHTML = results.map(r => 
-                        `<div class="result-item">${r.output}</div>`
+                        `<div class="result-item">${r}</div>`
                     ).join('');
                     document.getElementById('copyBtn').style.display = 'block';
-                    document.getElementById('copyBtn').dataset.results = results.map(r => r.output).join('\n');
+                    document.getElementById('copyBtn').dataset.results = results.join('\n');
                 }
             } catch (error) {
-                alert('Error in formula: ' + error.message);
+                alert('Error: ' + error.message);
             }
         }
 
-        function clearAll() {
-            document.getElementById('inputValues').value = '';
-            document.getElementById('results').innerHTML = '<div class="no-results">Enter values and click Calculate</div>';
-            document.getElementById('copyBtn').style.display = 'none';
-        }
-
+        // Copy Results
         function copyResults() {
             const results = document.getElementById('copyBtn').dataset.results;
             navigator.clipboard.writeText(results).then(() => {
@@ -378,7 +517,12 @@
             });
         }
 
-        // Allow Enter key to calculate
+        // Initialize
+        loadLibrary();
+        updateProfileSelect();
+        updateOperationSelect();
+
+        // Allow Ctrl+Enter to calculate
         document.getElementById('inputValues').addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'Enter') {
                 calculate();
