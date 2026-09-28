@@ -18,48 +18,48 @@
         }
 
         .main-container {
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
-            display: flex;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
         .panel {
-            flex: 1;
             background: white;
             border-radius: 8px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .panel-title {
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             color: #333;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             border-bottom: 2px solid #667eea;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
             color: #333;
             font-weight: 600;
-            margin-bottom: 4px;
-            font-size: 12px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 8px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 14px;
             font-family: inherit;
         }
 
@@ -76,10 +76,10 @@
         }
 
         button {
-            padding: 8px 12px;
+            padding: 10px 16px;
             border: none;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -96,8 +96,8 @@
         }
 
         .btn-small {
-            padding: 6px 10px;
-            font-size: 11px;
+            padding: 8px 12px;
+            font-size: 12px;
             width: auto;
         }
 
@@ -120,7 +120,7 @@
         }
 
         .item-list {
-            max-height: 200px;
+            max-height: 250px;
             overflow-y: auto;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -128,12 +128,12 @@
         }
 
         .item {
-            padding: 8px;
+            padding: 10px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
+            align-items: flex-start;
+            font-size: 13px;
         }
 
         .item:last-child {
@@ -148,6 +148,7 @@
         .item-detail {
             font-size: 11px;
             color: #666;
+            margin-top: 3px;
         }
 
         .item-actions {
@@ -157,12 +158,12 @@
 
         .result-item {
             background: #f0f7ff;
-            padding: 10px;
-            margin-bottom: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
             border-radius: 4px;
             border-left: 3px solid #667eea;
             font-family: 'Courier New', monospace;
-            font-size: 12px;
+            font-size: 13px;
             color: #333;
             word-break: break-all;
         }
@@ -171,8 +172,8 @@
             color: #999;
             font-style: italic;
             text-align: center;
-            padding: 15px;
-            font-size: 12px;
+            padding: 20px;
+            font-size: 13px;
         }
 
         .results-container {
@@ -189,20 +190,53 @@
 
         .input-row {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
 
         .input-row input {
             flex: 1;
         }
 
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-            }
+        .form-section {
+            border: 1px solid #eee;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
 
-            .panel {
-                padding: 12px;
+        .form-section-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .operation-in-profile {
+            background: #f9f9f9;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .operation-in-profile-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .operation-in-profile-formula {
+            font-size: 11px;
+            color: #666;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -219,7 +253,23 @@
                 <div class="item-list" id="profilesList"></div>
                 <div class="input-row">
                     <input type="text" id="profileNameInput" placeholder="Profile name">
-                    <button class="btn-primary btn-small" onclick="addProfile()">Add</button>
+                    <button class="btn-primary btn-small" onclick="startAddProfile()">Add</button>
+                </div>
+            </div>
+
+            <!-- Profile Form (Hidden) -->
+            <div id="profileFormContainer" style="display: none; border: 1px solid #ddd; padding: 12px; border-radius: 4px; margin-bottom: 10px;">
+                <div class="form-section-title">Assign Operations</div>
+                
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label style="margin-bottom: 8px;">Available Operations</label>
+                    <div id="operationsCheckboxList" style="max-height: 120px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; padding: 8px;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-success" style="flex: 1;" onclick="saveProfile()">Save Profile</button>
+                    <button class="btn-danger" style="flex: 1;" onclick="cancelProfileForm()">Cancel</button>
                 </div>
             </div>
 
@@ -233,8 +283,8 @@
                 </div>
             </div>
 
-            <!-- Operation Details Form (Hidden) -->
-            <div id="operationFormContainer" style="display: none; border: 1px solid #ddd; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+            <!-- Operation Form (Hidden) -->
+            <div id="operationFormContainer" style="display: none; border: 1px solid #ddd; padding: 12px; border-radius: 4px; margin-bottom: 10px;">
                 <div class="form-group">
                     <label>Formula</label>
                     <input type="text" id="operationFormula" placeholder="e.g., (value - 192) / 2">
@@ -248,7 +298,7 @@
                     <label>Decimal Places</label>
                     <input type="number" id="operationPrecision" min="0" max="5" value="1">
                 </div>
-                <div style="display: flex; gap: 5px;">
+                <div style="display: flex; gap: 8px;">
                     <button class="btn-success" style="flex: 1;" onclick="saveOperation()">Save</button>
                     <button class="btn-danger" style="flex: 1;" onclick="cancelOperationForm()">Cancel</button>
                 </div>
@@ -267,20 +317,13 @@
             </div>
 
             <div class="form-group">
-                <label>Operation</label>
-                <select id="operationSelect">
-                    <option value="">Select operation...</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Values (one per line)</label>
-                <textarea id="inputValues" placeholder="1000-001&#10;900-002&#10;800-003"></textarea>
+                <label>Value (e.g., 1500-001)</label>
+                <input type="text" id="inputValue" placeholder="1500-001">
             </div>
 
             <button class="btn-primary" onclick="calculate()">Calculate</button>
 
-            <div class="form-group" style="margin-top: 15px;">
+            <div class="form-group" style="margin-top: 20px;">
                 <label>Results</label>
                 <div class="results-container" id="results">
                     <div class="no-results">Results will appear here</div>
@@ -297,7 +340,9 @@
             operations: []
         };
 
+        let currentProfileName = null;
         let currentOperationName = null;
+        let currentProfileOperations = [];
 
         // Load from localStorage
         function loadLibrary() {
@@ -314,8 +359,8 @@
             localStorage.setItem('profileLibrary', JSON.stringify(library));
         }
 
-        // Add Profile
-        function addProfile() {
+        // Start Add Profile
+        function startAddProfile() {
             const name = document.getElementById('profileNameInput').value.trim();
             if (!name) {
                 alert('Enter profile name');
@@ -325,11 +370,58 @@
                 alert('Profile already exists');
                 return;
             }
-            library.profiles.push({ name });
+            currentProfileName = name;
+            currentProfileOperations = [];
+            updateOperationsCheckboxList();
+            document.getElementById('profileFormContainer').style.display = 'block';
+        }
+
+        // Update Operations Checkbox List
+        function updateOperationsCheckboxList() {
+            const container = document.getElementById('operationsCheckboxList');
+            if (library.operations.length === 0) {
+                container.innerHTML = '<div class="no-results">No operations available</div>';
+                return;
+            }
+            container.innerHTML = library.operations.map(op => `
+                <div style="padding: 6px; border-bottom: 1px solid #eee; display: flex; align-items: center;">
+                    <input type="checkbox" id="op-${op.name}" value="${op.name}" 
+                           ${currentProfileOperations.includes(op.name) ? 'checked' : ''}
+                           style="width: auto; margin-right: 8px;">
+                    <label for="op-${op.name}" style="margin: 0; font-weight: normal; font-size: 12px; cursor: pointer;">
+                        ${op.name} (${op.formula})
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        // Save Profile
+        function saveProfile() {
+            const checkboxes = document.querySelectorAll('#operationsCheckboxList input[type="checkbox"]:checked');
+            currentProfileOperations = Array.from(checkboxes).map(cb => cb.value);
+
+            if (currentProfileOperations.length === 0) {
+                alert('Select at least one operation');
+                return;
+            }
+
+            library.profiles.push({
+                name: currentProfileName,
+                operations: currentProfileOperations
+            });
+
             saveLibrary();
             renderProfiles();
             updateProfileSelect();
+            cancelProfileForm();
             document.getElementById('profileNameInput').value = '';
+        }
+
+        // Cancel Profile Form
+        function cancelProfileForm() {
+            document.getElementById('profileFormContainer').style.display = 'none';
+            currentProfileName = null;
+            currentProfileOperations = [];
         }
 
         // Delete Profile
@@ -349,7 +441,10 @@
             }
             container.innerHTML = library.profiles.map(p => `
                 <div class="item">
-                    <span class="item-name">${p.name}</span>
+                    <div>
+                        <div class="item-name">${p.name}</div>
+                        <div class="item-detail">Operations: ${p.operations.join(', ')}</div>
+                    </div>
                     <div class="item-actions">
                         <button class="btn-danger btn-small" onclick="deleteProfile('${p.name}')">Delete</button>
                     </div>
@@ -392,7 +487,6 @@
 
             saveLibrary();
             renderOperations();
-            updateOperationSelect();
             cancelOperationForm();
             document.getElementById('operationNameInput').value = '';
         }
@@ -409,9 +503,14 @@
         // Delete Operation
         function deleteOperation(name) {
             library.operations = library.operations.filter(o => o.name !== name);
+            library.profiles = library.profiles.map(p => ({
+                ...p,
+                operations: p.operations.filter(op => op !== name)
+            }));
             saveLibrary();
             renderOperations();
-            updateOperationSelect();
+            renderProfiles();
+            updateProfileSelect();
         }
 
         // Render Operations
@@ -443,47 +542,49 @@
             select.value = current;
         }
 
-        // Update Operation Select
-        function updateOperationSelect() {
-            const select = document.getElementById('operationSelect');
-            const current = select.value;
-            select.innerHTML = '<option value="">Select operation...</option>' +
-                library.operations.map(o => `<option value="${o.name}">${o.name}</option>`).join('');
-            select.value = current;
-        }
-
         // Profile Select Changed
         function onProfileChange() {
-            updateOperationSelect();
+            document.getElementById('inputValue').value = '';
+            document.getElementById('results').innerHTML = '<div class="no-results">Results will appear here</div>';
+            document.getElementById('copyBtn').style.display = 'none';
         }
 
         // Calculate
         function calculate() {
             const profileName = document.getElementById('profileSelect').value;
-            const operationName = document.getElementById('operationSelect').value;
-            const inputValues = document.getElementById('inputValues').value;
+            const inputValue = document.getElementById('inputValue').value.trim();
 
-            if (!profileName || !operationName || !inputValues.trim()) {
-                alert('Select profile, operation, and enter values');
+            if (!profileName) {
+                alert('Select a profile');
                 return;
             }
 
-            const operation = library.operations.find(o => o.name === operationName);
-            if (!operation) {
-                alert('Operation not found');
+            if (!inputValue) {
+                alert('Enter a value');
+                return;
+            }
+
+            const profile = library.profiles.find(p => p.name === profileName);
+            if (!profile || profile.operations.length === 0) {
+                alert('Profile has no operations');
                 return;
             }
 
             try {
+                const parts = inputValue.split('-');
+                const value = parseFloat(parts[0]);
+                const tag = parts.slice(1).join('-') || '';
+
+                if (isNaN(value)) {
+                    alert('Invalid value');
+                    return;
+                }
+
                 const results = [];
-                const lines = inputValues.trim().split('\n').filter(line => line.trim());
 
-                for (const line of lines) {
-                    const parts = line.trim().split('-');
-                    const value = parseFloat(parts[0]);
-                    const tag = parts.slice(1).join('-') || '';
-
-                    if (isNaN(value)) continue;
+                for (const operationName of profile.operations) {
+                    const operation = library.operations.find(o => o.name === operationName);
+                    if (!operation) continue;
 
                     const calc = new Function('value', `return ${operation.formula}`);
                     let result = calc(value);
@@ -496,19 +597,22 @@
                         output += `-${tag}`;
                     }
 
-                    results.push(output);
+                    results.push({
+                        operation: operationName,
+                        output: output
+                    });
                 }
 
                 const resultsDiv = document.getElementById('results');
                 if (results.length === 0) {
-                    resultsDiv.innerHTML = '<div class="no-results">No valid values</div>';
+                    resultsDiv.innerHTML = '<div class="no-results">No results</div>';
                     document.getElementById('copyBtn').style.display = 'none';
                 } else {
                     resultsDiv.innerHTML = results.map(r => 
-                        `<div class="result-item">${r}</div>`
+                        `<div class="result-item"><strong>${r.operation}:</strong> ${r.output}</div>`
                     ).join('');
                     document.getElementById('copyBtn').style.display = 'block';
-                    document.getElementById('copyBtn').dataset.results = results.join('\n');
+                    document.getElementById('copyBtn').dataset.results = results.map(r => r.output).join('\n');
                 }
             } catch (error) {
                 alert('Error: ' + error.message);
@@ -531,11 +635,10 @@
         // Initialize
         loadLibrary();
         updateProfileSelect();
-        updateOperationSelect();
 
-        // Allow Ctrl+Enter to calculate
-        document.getElementById('inputValues').addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'Enter') {
+        // Allow Enter to calculate
+        document.getElementById('inputValue').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
                 calculate();
             }
         });
