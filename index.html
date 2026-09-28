@@ -713,26 +713,6 @@
             select.value = current;
         }
 
-        // Format result - remove decimal if all zeros
-        function formatResult(value, suffix, tag) {
-            // Check if the value is a whole number
-            if (Number.isInteger(value)) {
-                // It's already a whole number, no decimals
-                let output = `${value}${suffix}`;
-                if (tag) {
-                    output += `-${tag}`;
-                }
-                return output;
-            } else {
-                // It has decimals, keep as is
-                let output = `${value}${suffix}`;
-                if (tag) {
-                    output += `-${tag}`;
-                }
-                return output;
-            }
-        }
-
         // Profile Select Changed
         function onProfileChange() {
             document.getElementById('inputValues').value = '';
@@ -785,16 +765,7 @@
                         let result = calc(value);
 
                         result = Math.round(result * Math.pow(10, operation.precision)) / Math.pow(10, operation.precision);
-                        
-                        // Format the result - remove decimals if they're all zeros
-                        let formatted;
-                        if (result % 1 === 0) {
-                            // Result is a whole number
-                            formatted = Math.floor(result);
-                        } else {
-                            // Result has decimals, use toFixed
-                            formatted = result.toFixed(operation.precision);
-                        }
+                        const formatted = Number(result.toFixed(operation.precision)).toString();
 
                         let output = `${formatted}${operation.suffix}`;
                         if (tag) {
