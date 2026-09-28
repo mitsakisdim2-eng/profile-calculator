@@ -292,7 +292,7 @@
                     <input type="text" id="profileNameInput" placeholder="Enter profile name">
                 </div>
 
-                <div class="form-section-title">Assign Operations</div>
+                <div class="form-section-title">Assign Operations (Optional)</div>
                 
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label style="margin-bottom: 8px;">Available Operations</label>
@@ -525,11 +525,6 @@
             const checkboxes = document.querySelectorAll('#operationsCheckboxList input[type="checkbox"]:checked');
             currentProfileOperations = Array.from(checkboxes).map(cb => cb.value);
 
-            if (currentProfileOperations.length === 0) {
-                alert('Select at least one operation');
-                return;
-            }
-
             if (isEditingProfile) {
                 // Update existing profile
                 const index = library.profiles.findIndex(p => p.name === currentProfileName);
@@ -580,7 +575,7 @@
                 <div class="item">
                     <div>
                         <div class="item-name">${p.name}</div>
-                        <div class="item-detail">Operations: ${p.operations.join(', ')}</div>
+                        <div class="item-detail">Operations: ${p.operations.length > 0 ? p.operations.join(', ') : 'None'}</div>
                     </div>
                     <div class="item-actions">
                         <button class="btn-warning btn-small" onclick="startEditProfile('${p.name}')">Edit</button>
@@ -741,8 +736,13 @@
             }
 
             const profile = library.profiles.find(p => p.name === profileName);
-            if (!profile || profile.operations.length === 0) {
-                alert('Profile has no operations');
+            if (!profile) {
+                alert('Profile not found');
+                return;
+            }
+
+            if (profile.operations.length === 0) {
+                alert('Profile has no operations. Edit the profile and add operations first.');
                 return;
             }
 
