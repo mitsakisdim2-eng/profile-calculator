@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Profile Calculator - Calculate aluminum profile dimensions">
+    <meta name="theme-color" content="#2196F3">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <title>Profile Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .formula-display {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(0);
+        }
+
+        .btn-clear {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+
+        .btn-clear:hover {
+            background: #e8e8e8;
+        }
+
+        .results-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .results-title {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .result-item {
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .no-results {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .copy-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #bbdefb;
+        }
+
+        .help-section {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #1565c0;
+            line-height: 1.5;
+        }
+
+        .help-section strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📐 Profile Calculator</h1>
+        <p class="subtitle">Calculate aluminum profile dimensions</p>
+
+        <div class="help-section">
+            <strong>How to use:</strong>
+            Enter values directly (one per line) or with tags (value-tag format).<br>
+            Example: <code>1000</code> or <code>1000-1</code>
+        </div>
+
+        <div class="form-group">
+            <label for="profileTitle">Profile Title/ID</label>
+            <input type="text" id="profileTitle" placeholder="e.g., s35011">
+        </div>
+
+        <div class="form-group">
+            <label for="profileType">Profile Type</label>
+            <select id="profileType">
+                <option value="custom">Custom Formula</option>
+                <option value="window">Window (subtract 192, divide by 2)</option>
+                <option value="door">Door (custom)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="formula">Formula</label>
+            <div class="formula-display" id="formulaDisplay">(value - 192) / 2</div>
+            <input type="text" id="formula" placeholder="e.g., (value - 192) / 2" value="(value - 192) / 2">
+            <small style="color: #666; display: block; margin-top: 5px;">Use 'value' as placeholder for input number</small>
+        </div>
+
+        <div class="form-group">
+            <label for="suffix">Output Suffix</label>
+            <input type="text" id="suffix" placeholder="e.g., x2" value="x2">
+        </div>
+
+        <div class="form-group">
+            <label for="precision">Decimal Precision</label>
+            <input type="number" id="precision" min="0" max="5" value="1">
+        </div>
+
+        <div class="form-group">
+            <label for="inputValues">Values to Calculate (one per line)</label>
+            <textarea id="inputValues" placeholder="1000&#10;900&#10;800&#10;700&#10;&#10;Or with tags:&#10;1000-1&#10;900-2&#10;800-4"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-calculate" onclick="calculate()">Calculate</button>
+            <button class="btn-clear" onclick="clearAll()">Clear</button>
+        </div>
+
+        <div class="results-section">
+            <div class="results-title">Results</div>
+            <div id="results" class="no-results">Enter values and click Calculate</div>
+            <button class="copy-btn" id="copyBtn" style="display: none;" onclick="copyResults()">📋 Copy Results</button>
+        </div>
+    </div>
+
+    <script>
+        // Register service worker for offline support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+
+        const profileTypeSelect = document.getElementById('profileType');
+        const formulaInput = document.getElementById('formula');
+        const formulaDisplay = document.getElementById('formulaDisplay');
+
+        // Update formula based on profile type
+        profileTypeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'window') {
+                formulaInput.value = '(value - 192) / 2';
+                formulaDisplay.textContent = '(value - 192) / 2';
+            } else if (e.target.value === 'door') {
+                formulaInput.value = 'value - 100';
+                formulaDisplay.textContent = 'value - 100';
+            }
+        });
+
+        formulaInput.addEventListener('input', (e) => {
+            formulaDisplay.textContent = e.target.value;
+        });
+
+        function calculate() {
+            const profileTitle = document.getElementById('profileTitle').value || 'Profile';
+            const inputValues = document.getElementById('inputValues').value;
+            const formula = document.getElementById('formula').value;
+            const suffix = document.getElementById('suffix').value;
+            const precision = parseInt(document.getElementById('precision').value) || 1;
+
+            if (!inputValues.trim()) {
+                alert('Please enter some values');
+                return;
+            }
+
+            try {
+                const results = [];
+                const lines = inputValues.trim().split('\n').filter(line => line.trim());
+
+                for (const line of lines) {
+                    const parts = line.trim().split('-');
+                    const value = parseFloat(parts[0]);
+                    const tag = parts.slice(1).join('-') || '';
+
+                    if (isNaN(value)) continue;
+
+                    // Create a safe calculator function
+                    const calc = new Function('value', `return ${formula}`);
+                    let result = calc(value);
+
+                    // Format the result
+                    result = Math.round(result * Math.pow(10, precision)) / Math.pow(10, precision);
+                    const formatted = result.toFixed(precision);
+
+                    // Build output
+                    let output = `${formatted}${suffix}`;
+                    if (tag) {
+                        output += `-${tag}`;
+                    }
+
+                    results.push({
+                        original: value,
+                        output: output,
+                        tag: tag ? parseInt(tag) || 0 : 0
+                    });
+                }
+
+                // Sort by tag number if present
+                results.sort((a, b) => a.tag - b.tag);
+
+                // Display results
+                const resultsDiv = document.getElementById('results');
+                if (results.length === 0) {
+                    resultsDiv.innerHTML = '<div class="no-results">No valid values to calculate</div>';
+                    document.getElementById('copyBtn').style.display = 'none';
+                } else {
+                    resultsDiv.innerHTML = results.map(r => 
+                        `<div class="result-item">${r.output}</div>`
+                    ).join('');
+                    document.getElementById('copyBtn').style.display = 'block';
+                    document.getElementById('copyBtn').dataset.results = results.map(r => r.output).join('\n');
+                }
+            } catch (error) {
+                alert('Error in formula: ' + error.message);
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('inputValues').value = '';
+            document.getElementById('results').innerHTML = '<div class="no-results">Enter values and click Calculate</div>';
+            document.getElementById('copyBtn').style.display = 'none';
+        }
+
+        function copyResults() {
+            const results = document.getElementById('copyBtn').dataset.results;
+            navigator.clipboard.writeText(results).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const original = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = original;
+                }, 2000);
+            });
+        }
+
+        // Allow Enter key to calculate
+        document.getElementById('inputValues').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                calculate();
+            }
+        });
+    </script>
+</body>
+</html>
