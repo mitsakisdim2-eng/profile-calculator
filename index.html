@@ -131,6 +131,17 @@
             background: #339af0;
         }
 
+        .btn-warning {
+            background: #ffa94d;
+            color: white;
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+
+        .btn-warning:hover {
+            background: #ff922b;
+        }
+
         .item-list {
             max-height: 250px;
             overflow-y: auto;
@@ -224,28 +235,6 @@
             text-transform: uppercase;
         }
 
-        .operation-in-profile {
-            background: #f9f9f9;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            border-left: 3px solid #667eea;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-        }
-
-        .operation-in-profile-name {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .operation-in-profile-formula {
-            font-size: 11px;
-            color: #666;
-        }
-
         .export-section {
             background: #fffbeb;
             border: 1px solid #fcd34d;
@@ -293,14 +282,16 @@
             <div class="form-group">
                 <label>Profiles</label>
                 <div class="item-list" id="profilesList"></div>
-                <div class="input-row">
-                    <input type="text" id="profileNameInput" placeholder="Profile name">
-                    <button class="btn-primary btn-small" onclick="startAddProfile()">Add</button>
-                </div>
+                <button class="btn-primary btn-small" onclick="startAddProfile()" style="width: 100%;">+ Add Profile</button>
             </div>
 
             <!-- Profile Form (Hidden) -->
             <div id="profileFormContainer" style="display: none; border: 1px solid #ddd; padding: 12px; border-radius: 4px; margin-bottom: 10px;">
+                <div class="form-section-title">Profile Name</div>
+                <div class="form-group">
+                    <input type="text" id="profileNameInput" placeholder="Enter profile name">
+                </div>
+
                 <div class="form-section-title">Assign Operations</div>
                 
                 <div class="form-group" style="margin-bottom: 10px;">
@@ -310,7 +301,7 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <button class="btn-success" style="flex: 1;" onclick="saveProfile()">Save Profile</button>
+                    <button class="btn-success" style="flex: 1;" onclick="saveProfile()">Save</button>
                     <button class="btn-danger" style="flex: 1;" onclick="cancelProfileForm()">Cancel</button>
                 </div>
             </div>
@@ -319,14 +310,16 @@
             <div class="form-group">
                 <label>Operations</label>
                 <div class="item-list" id="operationsList"></div>
-                <div class="input-row">
-                    <input type="text" id="operationNameInput" placeholder="Operation name">
-                    <button class="btn-primary btn-small" onclick="startAddOperation()">Add</button>
-                </div>
+                <button class="btn-primary btn-small" onclick="startAddOperation()" style="width: 100%;">+ Add Operation</button>
             </div>
 
             <!-- Operation Form (Hidden) -->
             <div id="operationFormContainer" style="display: none; border: 1px solid #ddd; padding: 12px; border-radius: 4px; margin-bottom: 10px;">
+                <div class="form-section-title">Operation Name</div>
+                <div class="form-group">
+                    <input type="text" id="operationNameInput" placeholder="Enter operation name">
+                </div>
+
                 <div class="form-group">
                     <label>Formula</label>
                     <input type="text" id="operationFormula" placeholder="e.g., (value - 192) / 2">
@@ -394,6 +387,8 @@
         let currentProfileName = null;
         let currentOperationName = null;
         let currentProfileOperations = [];
+        let isEditingProfile = false;
+        let isEditingOperation = false;
 
         // Load from localStorage or use default
         function loadLibrary() {
@@ -473,17 +468,22 @@
 
         // Start Add Profile
         function startAddProfile() {
-            const name = document.getElementById('profileNameInput').value.trim();
-            if (!name) {
-                alert('Enter profile name');
-                return;
-            }
-            if (library.profiles.find(p => p.name === name)) {
-                alert('Profile already exists');
-                return;
-            }
-            currentProfileName = name;
+            isEditingProfile = false;
+            currentProfileName = null;
             currentProfileOperations = [];
+            document.getElementById('profileNameInput').value = '';
+            document.getElementById('profileNameInput').focus();
+            updateOperationsCheckboxList();
+            document.getElementById('profileFormContainer').style.display = 'block';
+        }
+
+        // Start Edit Profile
+        function startEditProfile(name) {
+            isEditingProfile = true;
+            const profile = library.profiles.find(p => p.name === name);
+            currentProfileName = name;
+            currentProfileOperations = [...profile.operations];
+            document.getElementById('profileNameInput').value = name;
             updateOperationsCheckboxList();
             document.getElementById('profileFormContainer').style.display = 'block';
         }
@@ -509,6 +509,19 @@
 
         // Save Profile
         function saveProfile() {
+            const name = document.getElementById('profileNameInput').value.trim();
+
+            if (!name) {
+                alert('Enter profile name');
+                return;
+            }
+
+            // Check for duplicate names (but allow editing the same name)
+            if (!isEditingProfile && library.profiles.find(p => p.name === name)) {
+                alert('Profile already exists');
+                return;
+            }
+
             const checkboxes = document.querySelectorAll('#operationsCheckboxList input[type="checkbox"]:checked');
             currentProfileOperations = Array.from(checkboxes).map(cb => cb.value);
 
@@ -517,16 +530,25 @@
                 return;
             }
 
-            library.profiles.push({
-                name: currentProfileName,
-                operations: currentProfileOperations
-            });
+            if (isEditingProfile) {
+                // Update existing profile
+                const index = library.profiles.findIndex(p => p.name === currentProfileName);
+                library.profiles[index] = {
+                    name: name,
+                    operations: currentProfileOperations
+                };
+            } else {
+                // Add new profile
+                library.profiles.push({
+                    name: name,
+                    operations: currentProfileOperations
+                });
+            }
 
             saveLibrary();
             renderProfiles();
             updateProfileSelect();
             cancelProfileForm();
-            document.getElementById('profileNameInput').value = '';
         }
 
         // Cancel Profile Form
@@ -534,14 +556,17 @@
             document.getElementById('profileFormContainer').style.display = 'none';
             currentProfileName = null;
             currentProfileOperations = [];
+            isEditingProfile = false;
         }
 
         // Delete Profile
         function deleteProfile(name) {
-            library.profiles = library.profiles.filter(p => p.name !== name);
-            saveLibrary();
-            renderProfiles();
-            updateProfileSelect();
+            if (confirm(`Delete profile "${name}"?`)) {
+                library.profiles = library.profiles.filter(p => p.name !== name);
+                saveLibrary();
+                renderProfiles();
+                updateProfileSelect();
+            }
         }
 
         // Render Profiles
@@ -558,6 +583,7 @@
                         <div class="item-detail">Operations: ${p.operations.join(', ')}</div>
                     </div>
                     <div class="item-actions">
+                        <button class="btn-warning btn-small" onclick="startEditProfile('${p.name}')">Edit</button>
                         <button class="btn-danger btn-small" onclick="deleteProfile('${p.name}')">Delete</button>
                     </div>
                 </div>
@@ -566,63 +592,100 @@
 
         // Start Add Operation
         function startAddOperation() {
-            const name = document.getElementById('operationNameInput').value.trim();
-            if (!name) {
-                alert('Enter operation name');
-                return;
-            }
-            if (library.operations.find(o => o.name === name)) {
-                alert('Operation already exists');
-                return;
-            }
+            isEditingOperation = false;
+            currentOperationName = null;
+            document.getElementById('operationNameInput').value = '';
+            document.getElementById('operationFormula').value = '';
+            document.getElementById('operationSuffix').value = '';
+            document.getElementById('operationPrecision').value = '1';
+            document.getElementById('operationNameInput').focus();
+            document.getElementById('operationFormContainer').style.display = 'block';
+        }
+
+        // Start Edit Operation
+        function startEditOperation(name) {
+            isEditingOperation = true;
+            const operation = library.operations.find(o => o.name === name);
             currentOperationName = name;
+            document.getElementById('operationNameInput').value = name;
+            document.getElementById('operationFormula').value = operation.formula;
+            document.getElementById('operationSuffix').value = operation.suffix;
+            document.getElementById('operationPrecision').value = operation.precision;
             document.getElementById('operationFormContainer').style.display = 'block';
         }
 
         // Save Operation
         function saveOperation() {
+            const name = document.getElementById('operationNameInput').value.trim();
             const formula = document.getElementById('operationFormula').value.trim();
             const suffix = document.getElementById('operationSuffix').value.trim();
             const precision = parseInt(document.getElementById('operationPrecision').value) || 1;
+
+            if (!name) {
+                alert('Enter operation name');
+                return;
+            }
 
             if (!formula) {
                 alert('Enter formula');
                 return;
             }
 
-            library.operations.push({
-                name: currentOperationName,
-                formula,
-                suffix,
-                precision
-            });
+            // Check for duplicate names (but allow editing the same name)
+            if (!isEditingOperation && library.operations.find(o => o.name === name)) {
+                alert('Operation already exists');
+                return;
+            }
+
+            if (isEditingOperation) {
+                // Update existing operation
+                const index = library.operations.findIndex(o => o.name === currentOperationName);
+                library.operations[index] = {
+                    name: name,
+                    formula,
+                    suffix,
+                    precision
+                };
+            } else {
+                // Add new operation
+                library.operations.push({
+                    name: name,
+                    formula,
+                    suffix,
+                    precision
+                });
+            }
 
             saveLibrary();
             renderOperations();
+            renderProfiles(); // Re-render profiles in case operations list changed
             cancelOperationForm();
-            document.getElementById('operationNameInput').value = '';
         }
 
         // Cancel Operation Form
         function cancelOperationForm() {
             document.getElementById('operationFormContainer').style.display = 'none';
+            document.getElementById('operationNameInput').value = '';
             document.getElementById('operationFormula').value = '';
             document.getElementById('operationSuffix').value = '';
             document.getElementById('operationPrecision').value = '1';
             currentOperationName = null;
+            isEditingOperation = false;
         }
 
         // Delete Operation
         function deleteOperation(name) {
-            library.operations = library.operations.filter(o => o.name !== name);
-            library.profiles = library.profiles.map(p => ({
-                ...p,
-                operations: p.operations.filter(op => op !== name)
-            }));
-            saveLibrary();
-            renderOperations();
-            renderProfiles();
-            updateProfileSelect();
+            if (confirm(`Delete operation "${name}"?`)) {
+                library.operations = library.operations.filter(o => o.name !== name);
+                library.profiles = library.profiles.map(p => ({
+                    ...p,
+                    operations: p.operations.filter(op => op !== name)
+                }));
+                saveLibrary();
+                renderOperations();
+                renderProfiles();
+                updateProfileSelect();
+            }
         }
 
         // Render Operations
@@ -639,6 +702,7 @@
                         <div class="item-detail">${o.formula} ${o.suffix}</div>
                     </div>
                     <div class="item-actions">
+                        <button class="btn-warning btn-small" onclick="startEditOperation('${o.name}')">Edit</button>
                         <button class="btn-danger btn-small" onclick="deleteOperation('${o.name}')">Delete</button>
                     </div>
                 </div>
