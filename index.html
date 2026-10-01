@@ -472,7 +472,6 @@
     <div id="printContainer">
         <div class="print-header">
             <h1>Cutting Instructions</h1>
-            <p id="printDate"></p>
             <p id="printProfile"></p>
         </div>
         <table class="print-table">
@@ -492,6 +491,23 @@
     <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
 
     <script>
+        // HTML escape helper
+        function esc(s) {
+            return String(s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // JavaScript string escape helper
+        function js(s) {
+            return String(s)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'");
+        }
+
         // DEFAULT LIBRARY - This is saved in the code and loaded on first visit
         const DEFAULT_LIBRARY = {
             profiles: [],
@@ -524,11 +540,9 @@
             renderOperations();
         }
 
-        // Save to localStorage AND update the code
+        // Save to localStorage
         function saveLibrary() {
             localStorage.setItem('profileLibrary', JSON.stringify(library));
-            // Auto-download backup
-            downloadLibraryBackup();
         }
 
         // Export library to JSON file
@@ -539,18 +553,6 @@
             const link = document.createElement('a');
             link.href = url;
             link.download = `profile-library-${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // Download library as backup
-        function downloadLibraryBackup() {
-            const dataStr = JSON.stringify(library, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'profile-library-backup.json';
             link.click();
             URL.revokeObjectURL(url);
         }
@@ -618,11 +620,11 @@
             }
             container.innerHTML = library.operations.map(op => `
                 <div style="padding: 6px; border-bottom: 1px solid #eee; display: flex; align-items: center;">
-                    <input type="checkbox" id="op-${op.name}" value="${op.name}" 
+                    <input type="checkbox" id="op-${esc(op.name)}" value="${esc(op.name)}" 
                            ${currentProfileOperations.includes(op.name) ? 'checked' : ''}
                            style="width: auto; margin-right: 8px;">
-                    <label for="op-${op.name}" style="margin: 0; font-weight: normal; font-size: 12px; cursor: pointer;">
-                        ${op.name} (${op.formula})
+                    <label for="op-${esc(op.name)}" style="margin: 0; font-weight: normal; font-size: 12px; cursor: pointer;">
+                        ${esc(op.name)} (${esc(op.formula)})
                     </label>
                 </div>
             `).join('');
@@ -695,12 +697,12 @@
             container.innerHTML = library.profiles.map(p => `
                 <div class="item">
                     <div>
-                        <div class="item-name">${p.name}</div>
-                        <div class="item-detail">Operations: ${p.operations.length > 0 ? p.operations.join(', ') : 'None'}</div>
+                        <div class="item-name">${esc(p.name)}</div>
+                        <div class="item-detail">Operations: ${p.operations.length > 0 ? p.operations.map(esc).join(', ') : 'None'}</div>
                     </div>
                     <div class="item-actions">
-                        <button class="btn-warning btn-small" onclick="startEditProfile('${p.name}')">Edit</button>
-                        <button class="btn-danger btn-small" onclick="deleteProfile('${p.name}')">Delete</button>
+                        <button class="btn-warning btn-small" onclick="startEditProfile('${js(p.name)}')">Edit</button>
+                        <button class="btn-danger btn-small" onclick="deleteProfile('${js(p.name)}')">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -814,12 +816,12 @@
             container.innerHTML = library.operations.map(o => `
                 <div class="item">
                     <div>
-                        <div class="item-name">${o.name}</div>
-                        <div class="item-detail">${o.formula} ${o.suffix}</div>
+                        <div class="item-name">${esc(o.name)}</div>
+                        <div class="item-detail">${esc(o.formula)} ${esc(o.suffix)}</div>
                     </div>
                     <div class="item-actions">
-                        <button class="btn-warning btn-small" onclick="startEditOperation('${o.name}')">Edit</button>
-                        <button class="btn-danger btn-small" onclick="deleteOperation('${o.name}')">Delete</button>
+                        <button class="btn-warning btn-small" onclick="startEditOperation('${js(o.name)}')">Edit</button>
+                        <button class="btn-danger btn-small" onclick="deleteOperation('${js(o.name)}')">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -830,7 +832,7 @@
             const select = document.getElementById('profileSelect');
             const current = select.value;
             select.innerHTML = '<option value="">Select profile...</option>' +
-                library.profiles.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+                library.profiles.map(p => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
             select.value = current;
         }
 
@@ -900,6 +902,7 @@
                             tag: tag,
                             output: output,
                             length: formatted,
+                            quantity: 1,
                             suffix: operation.suffix,
                             id: tag
                         });
@@ -915,7 +918,7 @@
                     document.getElementById('printBtn').style.display = 'none';
                 } else {
                     resultsDiv.innerHTML = allResults.map(r => 
-                        `<div class="result-item">${r.output}</div>`
+                        `<div class="result-item">${esc(r.output)}</div>`
                     ).join('');
                     document.getElementById('copyBtn').style.display = 'block';
                     document.getElementById('printBtn').style.display = 'block';
@@ -947,21 +950,14 @@
             }
 
             const profileName = document.getElementById('profileSelect').value;
-            const today = new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-
-            document.getElementById('printDate').textContent = today;
             document.getElementById('printProfile').textContent = `Profile: ${profileName}`;
 
             const tableBody = document.getElementById('printTableBody');
             tableBody.innerHTML = lastResults.map(r => `
                 <tr>
-                    <td>${r.length}</td>
-                    <td>${r.suffix}</td>
-                    <td>${r.id}</td>
+                    <td>${esc(r.length)}</td>
+                    <td>${esc(String(r.quantity))}</td>
+                    <td>${esc(r.id)}</td>
                 </tr>
             `).join('');
 
