@@ -27,6 +27,7 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
         }
 
         .panel-title {
@@ -261,144 +262,72 @@
             width: auto;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-group button {
-            flex: 1;
-        }
-
-        /* Library Modal */
-        .library-toggle {
-            position: fixed;
-            top: 12px;
-            right: 12px;
-            z-index: 5000;
-            padding: 9px 14px;
-            border: 0;
-            border-radius: 5px;
-            cursor: pointer;
-            background: #444;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .library-overlay {
+        /* Modal styles */
+        .modal {
             display: none;
             position: fixed;
-            inset: 0;
-            z-index: 6000;
-            background: rgba(0, 0, 0, 0.45);
-            overflow-y: auto;
-            padding: 24px;
-        }
-
-        .library-overlay.open {
-            display: block;
-        }
-
-        .library-dialog {
-            position: relative;
-            max-width: 700px;
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .library-close {
-            position: absolute;
-            right: 18px;
-            top: 18px;
-            padding: 7px 12px;
-            border: 0;
-            border-radius: 4px;
-            cursor: pointer;
-            background: #667eea;
-            color: white;
-            font-weight: 600;
-        }
-
-        .library-close:hover {
-            background: #5568d3;
-        }
-
-        /* Print Preview Modal */
-        .preview-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 7000;
-            background: rgba(0, 0, 0, 0.5);
-            overflow-y: auto;
-            padding: 24px;
-        }
-
-        .preview-overlay.open {
-            display: block;
-        }
-
-        .preview-dialog {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .preview-close {
-            position: absolute;
-            right: 18px;
-            top: 18px;
-            padding: 7px 12px;
-            border: 0;
-            border-radius: 4px;
-            cursor: pointer;
-            background: #667eea;
-            color: white;
-            font-weight: 600;
-        }
-
-        .preview-close:hover {
-            background: #5568d3;
-        }
-
-        .preview-content {
-            max-height: 70vh;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .print-table {
+            z-index: 1000;
+            left: 0;
+            top: 0;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .print-table th {
-            background: #333;
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-close {
+            background: #ff6b6b;
             color: white;
-            padding: 12px;
-            text-align: center;
-            border: 2px solid #000;
-            font-weight: bold;
-            font-size: 14px;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .print-table td {
-            padding: 12px;
-            border: 1px solid #000;
-            text-align: center;
-            font-size: 12px;
+        .modal-close:hover {
+            background: #ee5a52;
         }
 
-        .print-table tr:nth-child(even) {
-            background: #f9f9f9;
+        /* Print preview styles */
+        .print-preview {
+            background: white;
+            padding: 40px;
+            font-family: Arial, sans-serif;
         }
 
         .print-header {
@@ -409,63 +338,46 @@
         }
 
         .print-header h1 {
-            font-size: 20px;
+            font-size: 16px;
             margin-bottom: 5px;
         }
 
-        .print-header p {
-            font-size: 12px;
-            color: #666;
+        .print-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        .cutting-optimization {
-            margin-top: 22px;
-            padding-top: 14px;
-            border-top: 2px solid #333;
-        }
-
-        .cutting-optimization h3 {
-            margin: 0 0 8px 0;
-            font-size: 14px;
-        }
-
-        .cutting-summary {
-            margin-bottom: 10px;
-            font-size: 12px;
-        }
-
-        .cutting-bar {
+        .print-table th {
+            background-color: #667eea;
+            color: white;
             padding: 8px;
-            margin-bottom: 8px;
-            background: #f0f7ff;
-            border-left: 3px solid #667eea;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            line-height: 1.5;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #333;
         }
 
-        .cutting-scrap {
-            float: right;
-            font-size: 11px;
-            opacity: .75;
+        .print-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .print-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .print-page-break {
+            page-break-after: always;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px dashed #999;
+        }
+
+        .print-footer {
+            text-align: right;
+            font-size: 10px;
             color: #666;
-        }
-
-        .preview-button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .preview-button-group button {
-            width: auto;
-            padding: 10px 20px;
-        }
-
-        @media (max-width: 900px) {
-            .library-dialog, .preview-dialog {
-                max-width: 95vw;
-            }
+            margin-top: 10px;
         }
 
         @media print {
@@ -473,813 +385,585 @@
                 background: white;
                 padding: 0;
             }
-
-            .main-container {
-                max-width: 100%;
+            .modal, .modal-content {
+                position: static;
+                max-height: none;
+                box-shadow: none;
             }
-
-            .panel, .library-toggle {
-                display: none;
+            .print-page-break {
+                page-break-after: always;
             }
+        }
 
-            .print-content {
-                display: block !important;
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <button class="library-toggle" onclick="openLibrary()">📚 Library</button>
-
     <div class="main-container">
+        <!-- Library Management Panel -->
         <div class="panel">
-            <div class="panel-title">⚙️ Calculate</div>
+            <div class="panel-title">Library Management</div>
+            
+            <div class="form-section">
+                <div class="form-section-title">Categories</div>
+                <div class="form-group">
+                    <label for="categoryInput">Category Name</label>
+                    <div class="input-row">
+                        <input type="text" id="categoryInput" placeholder="e.g., Window Frames">
+                        <button class="btn-success btn-small" onclick="addCategory()">Add</button>
+                    </div>
+                </div>
+                <div class="item-list" id="categoryList"></div>
+            </div>
 
+            <div class="form-section">
+                <div class="form-section-title">Profiles</div>
+                <div class="form-group">
+                    <label for="categorySelect">Select Category</label>
+                    <select id="categorySelect" onchange="loadProfilesForCategory()"></select>
+                </div>
+                <div class="form-group">
+                    <label for="profileInput">Profile Name</label>
+                    <div class="input-row">
+                        <input type="text" id="profileInput" placeholder="e.g., Aluminum 6063">
+                        <button class="btn-success btn-small" onclick="addProfile()">Add</button>
+                    </div>
+                </div>
+                <div class="item-list" id="profileList"></div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title">Operations for Profile</div>
+                <div class="form-group">
+                    <label for="operationSelect">Select Profile</label>
+                    <select id="operationSelect" onchange="loadOperationsForProfile()"></select>
+                </div>
+                <div class="form-group">
+                    <label for="operationInput">Formula</label>
+                    <textarea id="operationInput" placeholder="e.g., (value - 192) / 2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="suffixInput">Suffix</label>
+                    <input type="text" id="suffixInput" placeholder="e.g., x2">
+                </div>
+                <button class="btn-success" onclick="addOperation()">Add Operation</button>
+                <div class="item-list" id="operationList"></div>
+            </div>
+
+            <div class="export-section">
+                <div class="export-section-title">Data Management</div>
+                <button class="btn-info" onclick="exportLibrary()">Export Library</button>
+                <button class="btn-warning" onclick="importLibrary()">Import Library</button>
+                <input type="file" id="importFile" style="display: none;" accept=".json" onchange="handleImportFile()">
+            </div>
+        </div>
+
+        <!-- Calculate Panel -->
+        <div class="panel">
+            <div class="panel-title">Calculate Cutting Instructions</div>
+            
             <div class="form-group">
-                <label>Profile</label>
-                <select id="profileSelect" onchange="onProfileChange()">
-                    <option value="">Select profile...</option>
+                <label for="calcCategorySelect">Select Category</label>
+                <select id="calcCategorySelect" onchange="loadCalculateProfiles()">
+                    <option value="">-- Choose Category --</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Values (one per line)</label>
-                <textarea id="inputValues" placeholder="1500-001&#10;1400-002&#10;1300-003"></textarea>
+                <label for="calcProfileSelect">Select Profile</label>
+                <select id="calcProfileSelect">
+                    <option value="">-- Choose Profile --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="suffixOverride">Suffix Override (optional)</label>
+                <input type="text" id="suffixOverride" placeholder="Leave empty to use profile defaults">
+            </div>
+
+            <div class="form-group">
+                <label for="valuesInput">Values (one per line, format: "number-id")</label>
+                <textarea id="valuesInput" placeholder="e.g., 1500-001&#10;915-002&#10;610-003"></textarea>
             </div>
 
             <button class="btn-primary" onclick="calculate()">Calculate</button>
+            <button class="print-btn" onclick="openPrintPreview()">Print Preview</button>
 
             <div class="form-group" style="margin-top: 20px;">
                 <label>Results</label>
-                <div class="results-container" id="results">
-                    <div class="no-results">Results will appear here</div>
-                </div>
-                <div class="btn-group">
-                    <button class="copy-btn" id="copyBtn" style="display: none;" onclick="copyResults()">📋 Copy</button>
-                    <button class="print-btn" id="printBtn" style="display: none;" onclick="openPrintPreview()">👁️ Preview</button>
+                <div class="results-container" id="resultsContainer">
+                    <div class="no-results">No calculations yet</div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Library Modal -->
-    <div id="libraryOverlay" class="library-overlay">
-        <div class="library-dialog">
-            <button class="library-close" onclick="closeLibrary()">✕ Close</button>
-            <h2>Library</h2>
-
-            <div class="panel" style="box-shadow: none; margin-top: 15px;">
-                <div class="panel-title">📚 Library</div>
-
-                <!-- Export/Import Section -->
-                <div class="export-section">
-                    <div class="export-section-title">⚙️ Library Management</div>
-                    <div style="display: flex; gap: 5px;">
-                        <button class="btn-info" onclick="exportLibrary()">Export</button>
-                        <button class="btn-info" onclick="importLibrary()">Import</button>
-                    </div>
-                </div>
-
-                <!-- Categories Section -->
-                <div class="form-group">
-                    <label>Categories</label>
-                    <div class="item-list" id="categoriesList"></div>
-                    <button class="btn-primary btn-small" onclick="startAddCategory()" style="width: 100%;">+ Add Category</button>
-                </div>
-
-                <div id="categoryFormContainer" class="form-section" style="display: none;">
-                    <div class="form-section-title">Category Name</div>
-                    <div class="form-group"><input id="categoryNameInput" placeholder="Enter category name"></div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-success" style="flex: 1;" onclick="saveCategory()">Save</button>
-                        <button class="btn-danger" style="flex: 1;" onclick="cancelCategoryForm()">Close</button>
-                    </div>
-                    <div id="categoryProfilesEditor" style="margin-top: 12px;"></div>
-                </div>
-
-                <!-- Profiles Section -->
-                <div class="form-group">
-                    <label>Profiles</label>
-                    <div class="item-list" id="profilesList"></div>
-                    <button class="btn-primary btn-small" onclick="startAddProfile()" style="width: 100%;">+ Add Profile</button>
-                </div>
-
-                <div id="profileFormContainer" class="form-section" style="display: none;">
-                    <div class="form-section-title">Profile Name</div>
-                    <div class="form-group"><input type="text" id="profileNameInput" placeholder="Enter profile name"></div>
-                    <div class="form-section-title">Assign Operations (Optional)</div>
-                    <div class="form-group" style="margin-bottom: 10px;">
-                        <label style="margin-bottom: 8px;">Available Operations</label>
-                        <div id="operationsCheckboxList" style="max-height: 120px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; padding: 8px;"></div>
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-success" style="flex: 1;" onclick="saveProfile()">Save</button>
-                        <button class="btn-danger" style="flex: 1;" onclick="cancelProfileForm()">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Operations Section -->
-                <div class="form-group">
-                    <label>Operations</label>
-                    <div class="item-list" id="operationsList"></div>
-                    <button class="btn-primary btn-small" onclick="startAddOperation()" style="width: 100%;">+ Add Operation</button>
-                </div>
-
-                <div id="operationFormContainer" class="form-section" style="display: none;">
-                    <div class="form-section-title">Operation Name</div>
-                    <div class="form-group"><input type="text" id="operationNameInput" placeholder="Enter operation name"></div>
-                    <div class="form-group">
-                        <label>Formula</label>
-                        <input type="text" id="operationFormula" placeholder="e.g., (value - 192) / 2">
-                        <small style="color: #666; font-size: 11px;">Use 'value' as placeholder</small>
-                    </div>
-                    <div class="form-group">
-                        <label>Suffix</label>
-                        <input type="text" id="operationSuffix" placeholder="e.g., x2">
-                    </div>
-                    <div class="form-group">
-                        <label>Decimal Places</label>
-                        <input type="number" id="operationPrecision" min="0" max="5" value="1">
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-success" style="flex: 1;" onclick="saveOperation()">Save</button>
-                        <button class="btn-danger" style="flex: 1;" onclick="cancelOperationForm()">Cancel</button>
-                    </div>
-                </div>
-            </div>
+            <button class="copy-btn" onclick="copyResults()">Copy Results</button>
         </div>
     </div>
 
     <!-- Print Preview Modal -->
-    <div id="previewOverlay" class="preview-overlay">
-        <div class="preview-dialog">
-            <button class="preview-close" onclick="closePrintPreview()">✕ Close</button>
-            <div class="preview-content" id="previewContent"></div>
-            <div class="preview-button-group">
-                <button class="btn-danger" onclick="closePrintPreview()">Cancel</button>
-                <button class="btn-success" onclick="confirmPrint()">🖨️ Print</button>
+    <div id="printModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Print Preview - ΚΟΠΕΣ</h2>
+                <button class="modal-close" onclick="closePrintPreview()">&times;</button>
             </div>
+            <div id="printPreviewContent" class="print-preview"></div>
+            <button class="btn-primary" style="margin-top: 20px;" onclick="window.print()">Print</button>
         </div>
     </div>
 
-    <!-- Hidden file input for import -->
-    <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
-
     <script>
-        // Data storage
-        let library = { categories: [], profiles: [], operations: [] };
-        let lastResults = [];
-        let lastCuttingOptimization = [];
-        let currentProfileName = null;
-        let currentOperationName = null;
-        let currentCategoryName = null;
-        let isEditingProfile = false;
-        let isEditingOperation = false;
-        let isEditingCategory = false;
+        // Data structure
+        let library = {
+            categories: [],
+            profiles: {},
+            operations: {}
+        };
 
-        // Load from localStorage
-        function loadLibrary() {
-            const saved = localStorage.getItem('profileLibrary');
-            library = saved ? JSON.parse(saved) : { categories: [], profiles: [], operations: [] };
-            library.categories = Array.isArray(library.categories) ? library.categories : [];
-            library.profiles = Array.isArray(library.profiles) ? library.profiles : [];
-            library.operations = Array.isArray(library.operations) ? library.operations : [];
-            
-            library.categories = library.categories.map(c => ({
-                name: c.name,
-                profiles: Array.isArray(c.profiles) ? c.profiles : [],
-                overrides: c.overrides && typeof c.overrides === 'object' ? c.overrides : {}
-            }));
-            
-            renderProfiles();
-            renderOperations();
+        let lastResults = [];
+
+        // Initialize
+        function init() {
+            loadLibraryFromStorage();
             renderCategories();
-            updateProfileSelect();
+            updateAllSelects();
         }
 
-        function saveLibrary() {
+        // Storage Management
+        function loadLibraryFromStorage() {
+            const stored = localStorage.getItem('profileLibrary');
+            if (stored) {
+                library = JSON.parse(stored);
+            }
+        }
+
+        function saveLibraryToStorage() {
             localStorage.setItem('profileLibrary', JSON.stringify(library));
         }
 
-        function esc(s) {
-            return String(s)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+        // Category Management
+        function addCategory() {
+            const input = document.getElementById('categoryInput');
+            const name = input.value.trim();
+            if (!name) {
+                alert('Please enter a category name');
+                return;
+            }
+            if (library.categories.includes(name)) {
+                alert('Category already exists');
+                return;
+            }
+            library.categories.push(name);
+            library.profiles[name] = [];
+            library.operations[name] = {};
+            saveLibraryToStorage();
+            input.value = '';
+            renderCategories();
+            updateAllSelects();
         }
 
-        function js(s) {
-            return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        function deleteCategory(category) {
+            if (confirm(`Delete category "${category}"?`)) {
+                library.categories = library.categories.filter(c => c !== category);
+                delete library.profiles[category];
+                delete library.operations[category];
+                saveLibraryToStorage();
+                renderCategories();
+                updateAllSelects();
+            }
         }
 
-        // Library Modal Functions
-        function openLibrary() {
-            document.getElementById('libraryOverlay').classList.add('open');
-        }
-
-        function closeLibrary() {
-            document.getElementById('libraryOverlay').classList.remove('open');
-        }
-
-        // Categories
         function renderCategories() {
-            const el = document.getElementById('categoriesList');
-            if (!el) return;
-            el.innerHTML = library.categories.length
-                ? library.categories.map(c => `
-                    <div class="item">
-                        <div>
-                            <div class="item-name">${esc(c.name)}</div>
-                            <div class="item-detail">${(c.profiles || []).length} profile(s)</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-warning btn-small" onclick="openCategoryEditor('${js(c.name)}')">Edit</button>
-                            <button class="btn-danger btn-small" onclick="deleteCategory('${js(c.name)}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('')
-                : '<div class="no-results">No categories yet</div>';
-        }
-
-        function startAddCategory() {
-            openCategoryEditor('');
-        }
-
-        function openCategoryEditor(name) {
-            const c = name ? library.categories.find(x => x.name === name) : null;
-            currentCategoryName = c ? c.name : null;
-            isEditingCategory = !!c;
-            document.getElementById('categoryNameInput').value = c ? c.name : '';
-            document.getElementById('categoryFormContainer').style.display = 'block';
-            document.getElementById('categoryProfilesEditor').innerHTML = c 
-                ? categoryEditor(c) 
-                : '<div class="no-results">Save the category first.</div>';
-        }
-
-        function categoryEditor(c) {
-            const assigned = c.profiles || [];
-            let checks = library.profiles.length
-                ? library.profiles.map(p => `
-                    <label style="display: block; margin: 6px 0;">
-                        <input type="checkbox" class="catprof" value="${esc(p.name)}" 
-                               ${assigned.includes(p.name) ? 'checked' : ''} 
-                               onchange="saveCategoryAssignments()"> ${esc(p.name)}
-                    </label>`).join('')
-                : '<div class="no-results">Create profiles first.</div>';
-            
-            let ovs = assigned.map(n => {
-                let p = library.profiles.find(x => x.name === n);
-                if (!p) return '';
-                let m = (c.overrides && c.overrides[n]) || {};
-                return `
-                    <div class="form-section">
-                        <div class="item-name">${esc(n)}</div>
-                        ${(p.operations || []).map(on => {
-                            let o = library.operations.find(x => x.name === on);
-                            if (!o) return '';
-                            let v = m[on] || '';
-                            return `
-                                <div class="input-row" style="margin: 5px 0;">
-                                    <span style="flex: 1;">${esc(on)}</span>
-                                    <input style="max-width: 100px;" value="${esc(v)}" 
-                                           placeholder="${esc(o.suffix || '')}" 
-                                           onchange="setOverride('${js(n)}', '${js(on)}', this.value)">
-                                </div>
-                            `;
-                        }).join('') || '<div class="no-results">No operations assigned.</div>'}
-                    </div>
+            const list = document.getElementById('categoryList');
+            list.innerHTML = '';
+            library.categories.forEach(cat => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <span class="item-name">${cat}</span>
+                    <button class="btn-danger btn-small" onclick="deleteCategory('${cat}')">Delete</button>
                 `;
-            }).join('');
-            
-            return `
-                <div class="form-section-title">Profiles in this Category</div>
-                ${checks}
-                <div class="form-section-title" style="margin-top: 10px;">Operation Overrides</div>
-                <div class="item-detail">Set X4, X2, etc. Blank uses the operation default.</div>
-                ${ovs}
-            `;
-        }
-
-        function saveCategoryAssignments() {
-            let c = library.categories.find(x => x.name === currentCategoryName);
-            if (!c) return;
-            c.profiles = [...document.querySelectorAll('.catprof:checked')].map(x => x.value);
-            c.overrides = c.overrides || {};
-            Object.keys(c.overrides).forEach(n => {
-                if (!c.profiles.includes(n)) delete c.overrides[n];
+                list.appendChild(item);
             });
-            saveLibrary();
-            renderCategories();
-            document.getElementById('categoryProfilesEditor').innerHTML = categoryEditor(c);
-            updateProfileSelect();
         }
 
-        function setOverride(p, o, v) {
-            let c = library.categories.find(x => x.name === currentCategoryName);
-            if (!c) return;
-            c.overrides = c.overrides || {};
-            c.overrides[p] = c.overrides[p] || {};
-            v = v.trim();
-            if (v) c.overrides[p][o] = v;
-            else delete c.overrides[p][o];
-            saveLibrary();
+        // Profile Management
+        function loadProfilesForCategory() {
+            const select = document.getElementById('categorySelect');
+            const category = select.value;
+            renderProfiles(category);
+            loadOperationsForProfile();
         }
 
-        function saveCategory() {
-            let n = document.getElementById('categoryNameInput').value.trim();
-            if (!n) return alert('Enter category name');
-            if (!isEditingCategory && library.categories.some(c => c.name === n)) 
-                return alert('Category already exists');
-            
-            if (isEditingCategory) {
-                let i = library.categories.findIndex(c => c.name === currentCategoryName);
-                library.categories[i].name = n;
-                currentCategoryName = n;
-            } else {
-                library.categories.push({ name: n, profiles: [], overrides: {} });
-                currentCategoryName = n;
-                isEditingCategory = true;
+        function renderProfiles(category) {
+            const list = document.getElementById('profileList');
+            list.innerHTML = '';
+            if (!category) {
+                list.innerHTML = '<div class="no-results">Select a category first</div>';
+                return;
             }
-            saveLibrary();
-            renderCategories();
-            updateProfileSelect();
-            document.getElementById('categoryProfilesEditor').innerHTML = categoryEditor(library.categories.find(c => c.name === n));
-        }
-
-        function cancelCategoryForm() {
-            document.getElementById('categoryFormContainer').style.display = 'none';
-            currentCategoryName = null;
-            isEditingCategory = false;
-        }
-
-        function deleteCategory(n) {
-            if (!confirm('Delete category "' + n + '"? Profiles will not be deleted.')) return;
-            library.categories = library.categories.filter(c => c.name !== n);
-            saveLibrary();
-            renderCategories();
-            updateProfileSelect();
-            if (currentCategoryName === n) cancelCategoryForm();
-        }
-
-        // Profiles
-        function renderProfiles() {
-            const el = document.getElementById('profilesList');
-            if (!el) return;
-            el.innerHTML = library.profiles.length
-                ? library.profiles.map(p => `
-                    <div class="item">
-                        <div>
-                            <div class="item-name">${esc(p.name)}</div>
-                            <div class="item-detail">${(p.operations || []).length} operation(s)</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-warning btn-small" onclick="startEditProfile('${js(p.name)}')">Edit</button>
-                            <button class="btn-danger btn-small" onclick="deleteProfile('${js(p.name)}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('')
-                : '<div class="no-results">No profiles yet</div>';
-        }
-
-        function startAddProfile() {
-            currentProfileName = null;
-            isEditingProfile = false;
-            document.getElementById('profileNameInput').value = '';
-            renderOperationCheckboxes([]);
-            document.getElementById('profileFormContainer').style.display = 'block';
-        }
-
-        function startEditProfile(name) {
-            const p = library.profiles.find(x => x.name === name);
-            if (!p) return;
-            currentProfileName = name;
-            isEditingProfile = true;
-            document.getElementById('profileNameInput').value = p.name;
-            renderOperationCheckboxes(p.operations || []);
-            document.getElementById('profileFormContainer').style.display = 'block';
-        }
-
-        function renderOperationCheckboxes(selected) {
-            const el = document.getElementById('operationsCheckboxList');
-            el.innerHTML = library.operations.length
-                ? library.operations.map(o => `
-                    <label style="display: block; margin: 6px 0;">
-                        <input type="checkbox" class="profile-op" value="${esc(o.name)}" 
-                               ${selected.includes(o.name) ? 'checked' : ''}> ${esc(o.name)}
-                    </label>`).join('')
-                : '<div class="no-results">Create operations first.</div>';
-        }
-
-        function saveProfile() {
-            let n = document.getElementById('profileNameInput').value.trim();
-            if (!n) return alert('Enter profile name');
-            if (!isEditingProfile && library.profiles.some(p => p.name === n)) 
-                return alert('Profile already exists');
-            
-            const ops = [...document.querySelectorAll('.profile-op:checked')].map(x => x.value);
-            
-            if (isEditingProfile) {
-                let p = library.profiles.find(x => x.name === currentProfileName);
-                p.name = n;
-                p.operations = ops;
-            } else {
-                library.profiles.push({ name: n, operations: ops });
-            }
-            
-            saveLibrary();
-            renderProfiles();
-            updateProfileSelect();
-            cancelProfileForm();
-        }
-
-        function cancelProfileForm() {
-            document.getElementById('profileFormContainer').style.display = 'none';
-            currentProfileName = null;
-            isEditingProfile = false;
-        }
-
-        function deleteProfile(name) {
-            if (!confirm('Delete profile "' + name + '"?')) return;
-            library.profiles = library.profiles.filter(p => p.name !== name);
-            library.categories.forEach(c => {
-                c.profiles = c.profiles.filter(pn => pn !== name);
-                if (c.overrides && c.overrides[name]) delete c.overrides[name];
+            const profiles = library.profiles[category] || [];
+            profiles.forEach(profile => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <span class="item-name">${profile}</span>
+                    <button class="btn-danger btn-small" onclick="deleteProfile('${category}', '${profile}')">Delete</button>
+                `;
+                list.appendChild(item);
             });
-            saveLibrary();
-            renderProfiles();
-            updateProfileSelect();
         }
 
-        // Operations
-        function renderOperations() {
-            const el = document.getElementById('operationsList');
-            if (!el) return;
-            el.innerHTML = library.operations.length
-                ? library.operations.map(o => `
-                    <div class="item">
-                        <div>
-                            <div class="item-name">${esc(o.name)}</div>
-                            <div class="item-detail">${esc(o.formula)} → ${esc(o.suffix)}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-warning btn-small" onclick="startEditOperation('${js(o.name)}')">Edit</button>
-                            <button class="btn-danger btn-small" onclick="deleteOperation('${js(o.name)}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('')
-                : '<div class="no-results">No operations yet</div>';
-        }
-
-        function startAddOperation() {
-            currentOperationName = null;
-            isEditingOperation = false;
-            document.getElementById('operationNameInput').value = '';
-            document.getElementById('operationFormula').value = '';
-            document.getElementById('operationSuffix').value = '';
-            document.getElementById('operationPrecision').value = '1';
-            document.getElementById('operationFormContainer').style.display = 'block';
-        }
-
-        function startEditOperation(name) {
-            const o = library.operations.find(x => x.name === name);
-            if (!o) return;
-            currentOperationName = name;
-            isEditingOperation = true;
-            document.getElementById('operationNameInput').value = o.name;
-            document.getElementById('operationFormula').value = o.formula;
-            document.getElementById('operationSuffix').value = o.suffix;
-            document.getElementById('operationPrecision').value = o.precision || 1;
-            document.getElementById('operationFormContainer').style.display = 'block';
-        }
-
-        function saveOperation() {
-            let n = document.getElementById('operationNameInput').value.trim();
-            let f = document.getElementById('operationFormula').value.trim();
-            let s = document.getElementById('operationSuffix').value.trim();
-            let p = parseInt(document.getElementById('operationPrecision').value) || 1;
-            
-            if (!n || !f) return alert('Enter operation name and formula');
-            if (!isEditingOperation && library.operations.some(o => o.name === n)) 
-                return alert('Operation already exists');
-            
-            if (isEditingOperation) {
-                let o = library.operations.find(x => x.name === currentOperationName);
-                o.name = n;
-                o.formula = f;
-                o.suffix = s;
-                o.precision = p;
-            } else {
-                library.operations.push({ name: n, formula: f, suffix: s, precision: p });
+        function addProfile() {
+            const category = document.getElementById('categorySelect').value;
+            const input = document.getElementById('profileInput');
+            const name = input.value.trim();
+            if (!category) {
+                alert('Please select a category first');
+                return;
             }
-            
-            saveLibrary();
+            if (!name) {
+                alert('Please enter a profile name');
+                return;
+            }
+            if (library.profiles[category].includes(name)) {
+                alert('Profile already exists');
+                return;
+            }
+            library.profiles[category].push(name);
+            library.operations[category][name] = [];
+            saveLibraryToStorage();
+            input.value = '';
+            renderProfiles(category);
+            updateOperationSelect();
+        }
+
+        function deleteProfile(category, profile) {
+            if (confirm(`Delete profile "${profile}"?`)) {
+                library.profiles[category] = library.profiles[category].filter(p => p !== profile);
+                delete library.operations[category][profile];
+                saveLibraryToStorage();
+                renderProfiles(category);
+                updateOperationSelect();
+            }
+        }
+
+        // Operation Management
+        function loadOperationsForProfile() {
+            updateOperationSelect();
             renderOperations();
-            renderOperationCheckboxes([]);
-            cancelOperationForm();
         }
 
-        function cancelOperationForm() {
-            document.getElementById('operationFormContainer').style.display = 'none';
-            currentOperationName = null;
-            isEditingOperation = false;
-        }
-
-        function deleteOperation(name) {
-            if (!confirm('Delete operation "' + name + '"?')) return;
-            library.operations = library.operations.filter(o => o.name !== name);
-            library.profiles.forEach(p => {
-                p.operations = p.operations.filter(on => on !== name);
-            });
-            library.categories.forEach(c => {
-                Object.values(c.overrides || {}).forEach(ov => {
-                    if (ov[name]) delete ov[name];
+        function updateOperationSelect() {
+            const category = document.getElementById('categorySelect').value;
+            const select = document.getElementById('operationSelect');
+            select.innerHTML = '<option value="">-- Select Profile --</option>';
+            if (category && library.profiles[category]) {
+                library.profiles[category].forEach(profile => {
+                    const option = document.createElement('option');
+                    option.value = profile;
+                    option.textContent = profile;
+                    select.appendChild(option);
                 });
+            }
+        }
+
+        function renderOperations() {
+            const category = document.getElementById('categorySelect').value;
+            const profile = document.getElementById('operationSelect').value;
+            const list = document.getElementById('operationList');
+            list.innerHTML = '';
+            if (!category || !profile) {
+                list.innerHTML = '<div class="no-results">Select a category and profile first</div>';
+                return;
+            }
+            const ops = library.operations[category][profile] || [];
+            ops.forEach((op, idx) => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <div>
+                        <div class="item-name">Formula: ${op.formula}</div>
+                        <div class="item-detail">Suffix: ${op.suffix}</div>
+                    </div>
+                    <button class="btn-danger btn-small" onclick="deleteOperation('${category}', '${profile}', ${idx})">Delete</button>
+                `;
+                list.appendChild(item);
             });
-            saveLibrary();
+        }
+
+        function addOperation() {
+            const category = document.getElementById('categorySelect').value;
+            const profile = document.getElementById('operationSelect').value;
+            const formula = document.getElementById('operationInput').value.trim();
+            const suffix = document.getElementById('suffixInput').value.trim();
+            
+            if (!category || !profile) {
+                alert('Please select a category and profile first');
+                return;
+            }
+            if (!formula) {
+                alert('Please enter a formula');
+                return;
+            }
+            if (!suffix) {
+                alert('Please enter a suffix');
+                return;
+            }
+            
+            if (!library.operations[category][profile]) {
+                library.operations[category][profile] = [];
+            }
+            library.operations[category][profile].push({ formula, suffix });
+            saveLibraryToStorage();
+            document.getElementById('operationInput').value = '';
+            document.getElementById('suffixInput').value = '';
             renderOperations();
-            renderOperationCheckboxes([]);
         }
 
-        // Selector updates
-        function updateProfileSelect() {
-            const select = document.getElementById('profileSelect');
-            if (!select) return;
-            const current = select.value;
-            const allProfiles = library.profiles;
-            select.innerHTML = '<option value="">Select profile...</option>' +
-                allProfiles.map(p => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
-            select.disabled = allProfiles.length === 0;
-            select.value = allProfiles.some(p => p.name === current) ? current : '';
+        function deleteOperation(category, profile, idx) {
+            if (confirm('Delete this operation?')) {
+                library.operations[category][profile].splice(idx, 1);
+                saveLibraryToStorage();
+                renderOperations();
+            }
         }
 
-        function onProfileChange() {
-            // Profile changed
-        }
-
-        // Import/Export
-        function exportLibrary() {
-            const b = new Blob([JSON.stringify(library, null, 2)], { type: 'application/json' });
-            const u = URL.createObjectURL(b);
-            const a = document.createElement('a');
-            a.href = u;
-            a.download = 'profile-library.json';
-            a.click();
-            URL.revokeObjectURL(u);
-        }
-
-        function importLibrary() {
-            document.getElementById('fileInput').click();
-        }
-
-        function handleFileImport(e) {
-            const f = e.target.files[0];
-            if (!f) return;
-            const r = new FileReader();
-            r.onload = x => {
-                try {
-                    library = JSON.parse(x.target.result);
-                    library.categories = Array.isArray(library.categories) ? library.categories : [];
-                    library.profiles = Array.isArray(library.profiles) ? library.profiles : [];
-                    library.operations = Array.isArray(library.operations) ? library.operations : [];
-                    saveLibrary();
-                    renderProfiles();
-                    renderOperations();
-                    renderCategories();
-                    updateProfileSelect();
-                    alert('Library imported successfully!');
-                } catch (err) {
-                    alert('Error reading file: ' + err.message);
-                }
-            };
-            r.readAsText(f);
-            e.target.value = '';
-        }
-
-        // Calculate and Results
+        // Calculate
         function calculate() {
-            const profileName = document.getElementById('profileSelect').value;
-            const inputText = document.getElementById('inputValues').value.trim();
+            const category = document.getElementById('calcCategorySelect').value;
+            const profile = document.getElementById('calcProfileSelect').value;
+            const suffixOverride = document.getElementById('suffixOverride').value.trim();
+            const valuesInput = document.getElementById('valuesInput').value.trim();
 
-            if (!profileName) {
+            if (!category) {
+                alert('Please select a category');
+                return;
+            }
+            if (!profile) {
                 alert('Please select a profile');
                 return;
             }
-
-            const profile = library.profiles.find(p => p.name === profileName);
-            if (!profile) {
-                alert('Profile not found');
-                return;
-            }
-
-            if (!profile.operations || profile.operations.length === 0) {
-                alert('Selected profile has no operations assigned');
-                return;
-            }
-
-            if (!inputText) {
+            if (!valuesInput) {
                 alert('Please enter values');
                 return;
             }
 
-            const lines = inputText.split('\n').filter(l => l.trim());
-            const results = [];
-
-            lines.forEach(line => {
-                const parts = line.split('-');
-                if (parts.length < 2) return;
-                
-                const value = parseFloat(parts[0].trim());
-                const id = parts.slice(1).join('-').trim();
-
-                if (isNaN(value)) return;
-
-                const resultLine = {
-                    value,
-                    id,
-                    operations: {}
-                };
-
-                profile.operations.forEach(opName => {
-                    const op = library.operations.find(o => o.name === opName);
-                    if (!op) return;
-
-                    try {
-                        const result = eval(op.formula.replace(/value/g, value));
-                        const precision = op.precision || 1;
-                        const rounded = parseFloat(result.toFixed(precision));
-                        resultLine.operations[opName] = {
-                            value: rounded,
-                            suffix: op.suffix || ''
-                        };
-                    } catch (e) {
-                        resultLine.operations[opName] = {
-                            value: 'Error',
-                            suffix: op.suffix || ''
-                        };
-                    }
-                });
-
-                results.push(resultLine);
-            });
-
-            if (results.length === 0) {
-                alert('No valid values found');
+            const operations = library.operations[category][profile] || [];
+            if (operations.length === 0) {
+                alert('No operations defined for this profile');
                 return;
             }
 
-            lastResults = results;
-            lastCuttingOptimization = optimizeCutting(results);
-            displayResults(results);
-        }
+            const lines = valuesInput.split('\n').map(l => l.trim()).filter(l => l);
+            lastResults = [];
 
-        function displayResults(results) {
-            const resultsEl = document.getElementById('results');
-            let html = results.map(r => {
-                const opResults = Object.entries(r.operations)
-                    .map(([name, op]) => `${name}: ${op.value}${op.suffix}`)
-                    .join(' | ');
-                return `<div class="result-item">${r.id}: ${opResults}</div>`;
-            }).join('');
+            lines.forEach(line => {
+                const [valueStr, id] = line.split('-');
+                const value = parseFloat(valueStr);
+                if (isNaN(value)) return;
 
-            resultsEl.innerHTML = html;
-            document.getElementById('copyBtn').style.display = 'block';
-            document.getElementById('printBtn').style.display = 'block';
-        }
-
-        function optimizeCutting(results) {
-            const BAR_LENGTH = 4000;
-            const items = [];
-
-            // Convert results to cutting items
-            results.forEach(result => {
-                Object.entries(result.operations).forEach(([opName, opValue]) => {
-                    const length = Math.round(opValue.value);
-                    const quantity = parseInt(opValue.suffix.match(/\d+/) || 1);
-                    
-                    for (let i = 0; i < quantity; i++) {
-                        items.push({
-                            length,
-                            id: result.id,
-                            opName
+                operations.forEach(op => {
+                    try {
+                        const result = eval(op.formula.replace(/value/g, value));
+                        const suffix = suffixOverride || op.suffix;
+                        lastResults.push({
+                            value,
+                            id,
+                            formula: op.formula,
+                            result: Math.round(result),
+                            suffix
                         });
+                    } catch (e) {
+                        console.error('Formula error:', e);
                     }
                 });
             });
 
-            // Sort by length descending (best-fit first)
-            items.sort((a, b) => b.length - a.length);
-
-            const bars = [];
-            let currentBar = [];
-            let currentLength = 0;
-
-            items.forEach(item => {
-                if (currentLength + item.length <= BAR_LENGTH) {
-                    currentBar.push(item);
-                    currentLength += item.length;
-                } else {
-                    if (currentBar.length > 0) bars.push(currentBar);
-                    currentBar = [item];
-                    currentLength = item.length;
-                }
-            });
-
-            if (currentBar.length > 0) bars.push(currentBar);
-
-            return bars.map((bar, idx) => ({
-                barNumber: idx + 1,
-                items: bar,
-                totalLength: bar.reduce((sum, item) => sum + item.length, 0),
-                scrap: BAR_LENGTH - bar.reduce((sum, item) => sum + item.length, 0)
-            }));
+            renderResults();
         }
 
-        function openPrintPreview() {
-            const profileName = document.getElementById('profileSelect').value;
-            const previewContent = document.getElementById('previewContent');
-
-            let html = `
-                <div class="print-header">
-                    <h1>Cutting Instructions</h1>
-                    <p>Profile: <strong>${esc(profileName)}</strong></p>
-                </div>
-
-                <table class="print-table">
-                    <thead>
-                        <tr>
-                            <th>Length</th>
-                            <th>Quantity</th>
-                            <th>ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            lastResults.forEach(result => {
-                Object.entries(result.operations).forEach(([opName, opValue]) => {
-                    const quantity = opValue.suffix.match(/\d+/) || 1;
-                    html += `
-                        <tr>
-                            <td>${opValue.value}${opValue.suffix}</td>
-                            <td>${quantity}</td>
-                            <td>${esc(result.id)}</td>
-                        </tr>
-                    `;
-                });
+        function renderResults() {
+            const container = document.getElementById('resultsContainer');
+            if (lastResults.length === 0) {
+                container.innerHTML = '<div class="no-results">No results</div>';
+                return;
+            }
+            container.innerHTML = '';
+            lastResults.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.textContent = `${r.result}${r.suffix} (ID: ${r.id})`;
+                container.appendChild(item);
             });
-
-            html += `
-                    </tbody>
-                </table>
-
-                <div class="cutting-optimization">
-                    <h3>Cutting Optimization (4000mm bars)</h3>
-                    <div class="cutting-summary">Total bars: ${lastCuttingOptimization.length}</div>
-            `;
-
-            lastCuttingOptimization.forEach(bar => {
-                const itemsText = bar.items
-                    .map(item => `${item.length}x1(${item.id})`)
-                    .join(', ');
-                html += `
-                    <div class="cutting-bar">
-                        <strong>Bar ${bar.barNumber}:</strong> ${itemsText}
-                        <span class="cutting-scrap">Scrap: ${bar.scrap}mm</span>
-                    </div>
-                `;
-            });
-
-            html += `
-                </div>
-            `;
-
-            previewContent.innerHTML = html;
-            document.getElementById('previewOverlay').classList.add('open');
-        }
-
-        function closePrintPreview() {
-            document.getElementById('previewOverlay').classList.remove('open');
-        }
-
-        function confirmPrint() {
-            closePrintPreview();
-            window.print();
         }
 
         function copyResults() {
-            const resultsEl = document.getElementById('results');
-            const text = resultsEl.innerText;
+            if (lastResults.length === 0) {
+                alert('No results to copy');
+                return;
+            }
+            const text = lastResults.map(r => `${r.result}${r.suffix} (ID: ${r.id})`).join('\n');
             navigator.clipboard.writeText(text).then(() => {
-                alert('Results copied to clipboard!');
+                alert('Results copied to clipboard');
             });
         }
 
-        // Initialize
-        window.addEventListener('load', () => {
-            loadLibrary();
-        });
+        // Print Preview
+        function openPrintPreview() {
+            if (lastResults.length === 0) {
+                alert('No results to print');
+                return;
+            }
+
+            // Group results by ID
+            const grouped = {};
+            lastResults.forEach(r => {
+                if (!grouped[r.id]) grouped[r.id] = [];
+                grouped[r.id].push(r);
+            });
+
+            // Generate print content with A4 pagination (approx 35 rows per page)
+            const rowsPerPage = 35;
+            let html = '';
+            let rowCount = 0;
+            let pageNum = 1;
+
+            Object.keys(grouped).forEach(id => {
+                const items = grouped[id];
+                
+                items.forEach((item, idx) => {
+                    if (rowCount === 0) {
+                        if (pageNum > 1) html += '<div class="print-page-break"></div>';
+                        html += `
+                            <div class="print-header">
+                                <h1>ΚΟΠΕΣ - Σελίδα ${pageNum}</h1>
+                            </div>
+                            <table class="print-table">
+                                <thead>
+                                    <tr>
+                                        <th>ΜΗΚΟΣ (mm)</th>
+                                        <th>ΤΕΜΑΧΙΑ</th>
+                                        <th>ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        pageNum++;
+                    }
+
+                    html += `
+                        <tr>
+                            <td>${item.result}</td>
+                            <td>1</td>
+                            <td>${id}</td>
+                        </tr>
+                    `;
+                    rowCount++;
+
+                    if (rowCount >= rowsPerPage) {
+                        html += '</tbody></table>';
+                        rowCount = 0;
+                    }
+                });
+            });
+
+            if (rowCount > 0) {
+                html += '</tbody></table>';
+            }
+
+            document.getElementById('printPreviewContent').innerHTML = html;
+            document.getElementById('printModal').classList.add('active');
+        }
+
+        function closePrintPreview() {
+            document.getElementById('printModal').classList.remove('active');
+        }
+
+        // Calculate panel updates
+        function loadCalculateProfiles() {
+            const category = document.getElementById('calcCategorySelect').value;
+            const select = document.getElementById('calcProfileSelect');
+            select.innerHTML = '<option value="">-- Choose Profile --</option>';
+            if (category && library.profiles[category]) {
+                library.profiles[category].forEach(profile => {
+                    const option = document.createElement('option');
+                    option.value = profile;
+                    option.textContent = profile;
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        // Update all select dropdowns
+        function updateAllSelects() {
+            // Category select in library
+            const catSelect = document.getElementById('categorySelect');
+            catSelect.innerHTML = '<option value="">-- Select Category --</option>';
+            library.categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                catSelect.appendChild(option);
+            });
+
+            // Category select in calculate
+            const calcCatSelect = document.getElementById('calcCategorySelect');
+            calcCatSelect.innerHTML = '<option value="">-- Choose Category --</option>';
+            library.categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                calcCatSelect.appendChild(option);
+            });
+        }
+
+        // Export/Import
+        function exportLibrary() {
+            const json = JSON.stringify(library, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'profile-library.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importLibrary() {
+            document.getElementById('importFile').click();
+        }
+
+        function handleImportFile() {
+            const file = document.getElementById('importFile').files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    library = JSON.parse(e.target.result);
+                    saveLibraryToStorage();
+                    renderCategories();
+                    updateAllSelects();
+                    alert('Library imported successfully');
+                } catch (err) {
+                    alert('Error importing library: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
